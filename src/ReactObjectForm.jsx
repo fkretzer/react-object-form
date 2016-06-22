@@ -14,7 +14,7 @@ console.log = console.log ? console.log : () => {};
 const PropertyConfig =
 {
   //Property key in Object
-  propertyName: React.PropTypes.string.isRequired,
+  name: React.PropTypes.string.isRequired,
   //If property is a child-object configs for its properties can be supplied
   config: React.PropTypes.arrayOf(React.PropTypes.shape(PropertyConfig)),
   //Possible values for this property
@@ -56,16 +56,16 @@ class ReactObjectForm extends React.Component {
     let configtmp = {};
     configtmp.config = properties;
     //obey PropTypes
-    configtmp.propertyName = id ? id : "objEd";
+    configtmp.name = id ? id : "objEd";
     configtmp = Object.assign({},config, configtmp);
     return(
-      <form className={`${configtmp.propertyName}-form`}>
-  <BaseFormRenderer {...rest} {...configtmp} id={configtmp.propertyName} object={object} />
+      <form className={`${configtmp.name}-form`}>
+  <BaseFormRenderer {...rest} {...configtmp} id={configtmp.name} object={object} />
       </form>
   )
   }
 }
-export const GenericValueInput = ({value,id, propertyName, placeholder, changeHandler,disabled, ...rest}) => {
+export const GenericValueInput = ({value,id, name, placeholder, changeHandler,disabled, ...rest}) => {
   let internalChangeHandler = (event) => changeHandler(event.target.value);
   return(
     <input
@@ -90,7 +90,7 @@ GenericValueInput.propTypes = {
 ]),
   config: React.PropTypes.shape(PropertyConfig)};
 
-export const BooleanValueInput = ({value, id, propertyName, placeholder, changeHandler,disabled, ...rest}) => {
+export const BooleanValueInput = ({value, id, name, placeholder, changeHandler,disabled, ...rest}) => {
   let internalChangeHandler = (event) => changeHandler(event.target.checked);
   return(
     <input {...rest}
@@ -98,8 +98,8 @@ export const BooleanValueInput = ({value, id, propertyName, placeholder, changeH
   className={`${disabled ? "disabled": ""} form-control boolean-value-input`}
   type="checkbox"
   checked={value ? "checked" : null}
-  value={propertyName}
-  name={propertyName}
+  value={name}
+  name={name}
   onChange={internalChangeHandler}
   disabled={disabled ? "disabled": null}/>);
 };
@@ -112,12 +112,12 @@ BooleanValueInput.propTypes = {
 
 
 
-export const FieldRenderer = ({propertyName,id, object, caption, label, ...rest}) => {
+export const FieldRenderer = ({name,id, object, caption, label, ...rest}) => {
   return(
     <div className="form-group">
-    <label id={id+"-label"}>{label ? label : propertyName}</label>
+    <label id={id+"-label"}>{label ? label : name}</label>
     <div>
-    <BaseFormRenderer {...rest} id={id} propertyName={propertyName}  object={object}  />
+    <BaseFormRenderer {...rest} id={id} name={name}  object={object}  />
     <span id={id+"-caption"}>{caption}</span>
     </div>
     </div>
@@ -126,29 +126,29 @@ export const FieldRenderer = ({propertyName,id, object, caption, label, ...rest}
 FieldRenderer.propTypes = {
   config: React.PropTypes.arrayOf(React.PropTypes.shape(PropertyConfig)),
   object: InternalObjectValuePropType,
-  propertyName: React.PropTypes.string.isRequired
+  name: React.PropTypes.string.isRequired
 };
 
-export const ObjectFormRenderer = ({object, config, changeHandler,propertyName,id, ...rest}) => {
+export const ObjectFormRenderer = ({object, config, changeHandler,name,id, ...rest}) => {
   
-  const childConfig = (propertyName) => {
-    return config ? config.find((currentConfig) => currentConfig.propertyName === propertyName) : null;
+  const childConfig = (name) => {
+    return config ? config.find((currentConfig) => currentConfig.name === name) : null;
   };
   
-  const createChildChangeHandler = (propertyName) => (newObjectValue) => {
-    if (childConfig(propertyName) && childConfig(propertyName).hasOwnProperty("changeHandler") && "function" == typeof childConfig(propertyName).changeHandler){
-      childConfig(propertyName).changeHandler(newObjectValue, changeHandler);
+  const createChildChangeHandler = (name) => (newObjectValue) => {
+    if (childConfig(name) && childConfig(name).hasOwnProperty("changeHandler") && "function" == typeof childConfig(name).changeHandler){
+      childConfig(name).changeHandler(newObjectValue, changeHandler);
     } else {
       let changedObject = Object.assign({}, object);
-      changedObject[propertyName] = newObjectValue;
+      changedObject[name] = newObjectValue;
       changeHandler(changedObject);
     }
   };
   
   
   const fields = Object.keys(object)
-      .filter((propertyName) => {
-      let currchildConfig = childConfig(propertyName);
+      .filter((name) => {
+      let currchildConfig = childConfig(name);
   if(! currchildConfig){
     return true;
   }
@@ -161,7 +161,7 @@ export const ObjectFormRenderer = ({object, config, changeHandler,propertyName,i
     <FieldRenderer {...rest} {...childPropertyConfig}
   key={childPropertyName}
   id={prefix+childPropertyName}
-  propertyName={childPropertyName}
+  name={childPropertyName}
   object={object[childPropertyName]}
   changeHandler={createChildChangeHandler(childPropertyName)}/>)
 });
@@ -206,11 +206,11 @@ export const MultiSelectRenderer = ({value, ...rest}) => {
 };
 
 
-export const BaseFormRenderer = ({object,config, propertyName, options, ...rest}) => {
+export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
   //handle explicitly configured inputs
   
   if (options && Array.isArray(options)){
-    return(<MultiSelectRenderer {...rest} {...config} value={object} propertyName={propertyName} options={options} />)
+    return(<MultiSelectRenderer {...rest} {...config} value={object} name={name} options={options} />)
   }
   
   
@@ -222,11 +222,11 @@ export const BaseFormRenderer = ({object,config, propertyName, options, ...rest}
       return(<ObjectFormRenderer
     {...rest}
       config={config}
-      object={object} propertyName={propertyName}  />);
+      object={object} name={name}  />);
     case "boolean":
-      return(<BooleanValueInput {...rest} {...config} value={object} propertyName={propertyName}/>);
+      return(<BooleanValueInput {...rest} {...config} value={object} name={name}/>);
     default:
-      return(<GenericValueInput {...rest} {...config} value={object} propertyName={propertyName}/>)
+      return(<GenericValueInput {...rest} {...config} value={object} name={name}/>)
     
   }
 };
