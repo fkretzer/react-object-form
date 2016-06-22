@@ -1,0 +1,242 @@
+import React from 'react';
+import Select from 'react-select';
+
+
+//Workaround. See -> https://phabricator.babeljs.io/T6777
+typeof undefined;
+let console = console ? console : {}
+console.log = console.log ? console.log : () => {};
+
+//TODO: Make all components configurable by checking for component override via config
+
+
+//Base shape for property config
+const PropertyConfig =
+{
+  //Property key in Object
+  propertyName: React.PropTypes.string.isRequired,
+  //If property is a child-object configs for its properties can be supplied
+  config: React.PropTypes.arrayOf(React.PropTypes.shape(PropertyConfig)),
+  //Possible values for this property
+  options: React.PropTypes.array,
+  //true if property can contain values which are not listed in "options"
+  allowCustomValues: React.PropTypes.bool,
+  //true if form field should be read-only
+  disabled: React.PropTypes.bool,
+  placeholder: React.PropTypes.string,
+  label: React.PropTypes.string,
+  //TODO: concept / implement
+  validator: React.PropTypes.func,
+  caption: React.PropTypes.string,
+  changeHandler: React.PropTypes.func,
+  hide: React.PropTypes.bool
+};
+
+const InternalObjectValuePropType = React.PropTypes.oneOfType([
+  React.PropTypes.object,
+  React.PropTypes.bool,
+  React.PropTypes.number,
+  React.PropTypes.string,
+  React.PropTypes.arrayOf([
+    React.PropTypes.bool,
+    React.PropTypes.number,
+    React.PropTypes.string])]).isRequired;
+
+class ReactObjectForm extends React.Component {
+  
+  static propTypes = {
+    object: React.PropTypes.object.isRequired,
+    properties: React.PropTypes.arrayOf(React.PropTypes.shape(PropertyConfig)),
+    changeHandler: React.PropTypes.func,
+    id: React.PropTypes.string.isRequired
+  };
+  
+  render(){
+    let {object, properties, config, id, ...rest } = this.props;
+    let configtmp = {};
+    configtmp.config = properties;
+    //obey PropTypes
+    configtmp.propertyName = id ? id : "objEd";
+    configtmp = Object.assign({},config, configtmp);
+    return(
+      <form className={`${configtmp.propertyName}-form`}>
+  <BaseFormRenderer {...rest} {...configtmp} id={configtmp.propertyName} object={object} />
+      </form>
+  )
+  }
+}
+export const GenericValueInput = ({value,id, propertyName, placeholder, changeHandler,disabled, ...rest}) => {
+  let internalChangeHandler = (event) => changeHandler(event.target.value);
+  return(
+    <input
+  id={id+"-input"}
+  className={`${disabled ? "disabled": ""} form-control generic-value-input`}
+  type="text"
+  value={value}
+  onChange={internalChangeHandler}
+  placeholder={placeholder}
+  disabled={disabled ? "disabled": null}
+    />
+)
+};
+GenericValueInput.propTypes = {
+  ...PropertyConfig,
+  value: React.PropTypes.oneOfType([
+  React.PropTypes.number,
+  React.PropTypes.string,
+  React.PropTypes.arrayOf([
+    React.PropTypes.number,
+    React.PropTypes.string])
+]),
+  config: React.PropTypes.shape(PropertyConfig)};
+
+export const BooleanValueInput = ({value, id, propertyName, placeholder, changeHandler,disabled, ...rest}) => {
+  let internalChangeHandler = (event) => changeHandler(event.target.checked);
+  return(
+    <input {...rest}
+  id={id+"-input"}
+  className={`${disabled ? "disabled": ""} form-control boolean-value-input`}
+  type="checkbox"
+  checked={value ? "checked" : null}
+  value={propertyName}
+  name={propertyName}
+  onChange={internalChangeHandler}
+  disabled={disabled ? "disabled": null}/>);
+};
+BooleanValueInput.propTypes = {
+  ...PropertyConfig,
+  value: React.PropTypes.bool,
+  config: React.PropTypes.shape(PropertyConfig)
+};
+
+
+
+
+export const FieldRenderer = ({propertyName,id, object, caption, label, ...rest}) => {
+  return(
+    <div className="form-group">
+    <label id={id+"-label"}>{label ? label : propertyName}</label>
+    <div>
+    <BaseFormRenderer {...rest} id={id} propertyName={propertyName}  object={object}  />
+    <span id={id+"-caption"}>{caption}</span>
+    </div>
+    </div>
+)
+};
+FieldRenderer.propTypes = {
+  config: React.PropTypes.arrayOf(React.PropTypes.shape(PropertyConfig)),
+  object: InternalObjectValuePropType,
+  propertyName: React.PropTypes.string.isRequired
+};
+
+export const ObjectFormRenderer = ({object, config, changeHandler,propertyName,id, ...rest}) => {
+  
+  const childConfig = (propertyName) => {
+    return config ? config.find((currentConfig) => currentConfig.propertyName === propertyName) : null;
+  };
+  
+  const createChildChangeHandler = (propertyName) => (newObjectValue) => {
+    if (childConfig(propertyName) && childConfig(propertyName).hasOwnProperty("changeHandler") && "function" == typeof childConfig(propertyName).changeHandler){
+      childConfig(propertyName).changeHandler(newObjectValue, changeHandler);
+    } else {
+      let changedObject = Object.assign({}, object);
+      changedObject[propertyName] = newObjectValue;
+      changeHandler(changedObject);
+    }
+  };
+  
+  
+  const fields = Object.keys(object)
+      .filter((propertyName) => {
+      let currchildConfig = childConfig(propertyName);
+  if(! currchildConfig){
+    return true;
+  }
+  return !currchildConfig.hide;
+})
+.map((childPropertyName) => {
+    const childPropertyConfig = childConfig(childPropertyName);
+  const prefix = id && id != "" ? id+"-" : id;
+  return(
+    <FieldRenderer {...rest} {...childPropertyConfig}
+  key={childPropertyName}
+  id={prefix+childPropertyName}
+  propertyName={childPropertyName}
+  object={object[childPropertyName]}
+  changeHandler={createChildChangeHandler(childPropertyName)}/>)
+});
+  return(
+    <fieldset id={id+"-fieldset"} style={{border:"1px solid grey", padding: "5px", borderRadius: "3px"}}>
+  {fields}
+</fieldset>
+)
+};
+ObjectFormRenderer.propTypes = {
+  object:React.PropTypes.object,
+  config: React.PropTypes.arrayOf(React.PropTypes.shape(PropertyConfig))
+};
+
+
+
+
+export const SelectRenderer = ({value, options, id, changeHandler, allowCustomValues, multi, ...rest}) => {
+  let internalChangeHandler = (values) => {
+    if (values){
+      if (Array.isArray(values)){
+        changeHandler(values.map((value) => {return value.value ? value.value : null;} ));
+      } else {
+        changeHandler(values.value ? values.value : null);
+      }
+    }
+  };
+  return(
+    <Select
+  options={options}
+  name={id+"-select"}
+  value={value}
+  onChange={internalChangeHandler}
+  multi={multi}
+  allowCreate={allowCustomValues}
+  clearable={allowCustomValues}/>
+);
+};
+
+export const MultiSelectRenderer = ({value, ...rest}) => {
+  return(<SelectRenderer {...rest}  value={value} multi={Array.isArray(value)}/>);
+};
+
+
+export const BaseFormRenderer = ({object,config, propertyName, options, ...rest}) => {
+  //handle explicitly configured inputs
+  
+  if (options && Array.isArray(options)){
+    return(<MultiSelectRenderer {...rest} {...config} value={object} propertyName={propertyName} options={options} />)
+  }
+  
+  
+  //handle generic cases
+  const valueType = typeof object;
+  
+  switch (valueType){
+    case "object":
+      return(<ObjectFormRenderer
+    {...rest}
+      config={config}
+      object={object} propertyName={propertyName}  />);
+    case "boolean":
+      return(<BooleanValueInput {...rest} {...config} value={object} propertyName={propertyName}/>);
+    default:
+      return(<GenericValueInput {...rest} {...config} value={object} propertyName={propertyName}/>)
+    
+  }
+};
+BaseFormRenderer.propTypes = {
+  object: InternalObjectValuePropType,
+  config: React.PropTypes.oneOfType([
+    React.PropTypes.arrayOf(React.PropTypes.shape(PropertyConfig)),
+    React.PropTypes.shape(PropertyConfig)
+  ])
+};
+
+
+export default ReactObjectForm;
