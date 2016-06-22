@@ -35,27 +35,27 @@ describe("ReactObjectForm", function() {
     // Runs when the Suite loads.
     // Use this to load your component-under-test.
     this.load( <ReactObjectForm object={data}
-                                properties={config}
+                                config={config}
                                 id={"object-form-1"}/> );
   });
 
   it("reload", () => {
     this.load( <ReactObjectForm
       object={data}
-      properties={config}
+      config={config}
       id={"object-form-1"}/> );
   });
 
   section("Config", () => {
     it("Hide name property", () => {
-      this.props({properties:[{
+      this.props({config:[{
         name:"name",
         hide: true}]});
     });
-    it("Change name label to NAME", () => {this.props({properties:[{name:"name", label: "NAME"}]})});
+    it("Change name label to NAME", () => {this.props({config:[{name:"name", label: "NAME"}]})});
     it("Select from different cities", () => {
       this.props({
-        properties: [{name:"address", config:[{
+        config: [{name:"address", config:[{
           name: "street",
           options:[
           {value:"street-1", label:"Street One"},
