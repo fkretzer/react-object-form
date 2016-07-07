@@ -166,7 +166,7 @@ export const ObjectFormRenderer = ({object, config, changeHandler,name,id, ...re
   changeHandler={createChildChangeHandler(childPropertyName)}/>)
 });
   return(
-    <fieldset id={id+"-fieldset"} style={{border:"1px solid grey", padding: "5px", borderRadius: "3px"}}>
+    <fieldset id={id+"-fieldset"}>
   {fields}
 </fieldset>
 )
