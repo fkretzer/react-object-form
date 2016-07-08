@@ -144,27 +144,29 @@ export const ObjectFormRenderer = ({object, config, changeHandler,name,id, ...re
       changeHandler(changedObject);
     }
   };
-  
-  
-  const fields = Object.keys(object)
+  let fields = [] ;
+  if (object){
+    fields = Object.keys(object)
       .filter((name) => {
-      let currchildConfig = childConfig(name);
-  if(! currchildConfig){
-    return true;
+        let currchildConfig = childConfig(name);
+        if(! currchildConfig){
+          return true;
+        }
+        return !currchildConfig.hide;
+      })
+      .map((childPropertyName) => {
+        const childPropertyConfig = childConfig(childPropertyName);
+        const prefix = id && id != "" ? id+"-" : id;
+        return(
+          <FieldRenderer {...rest} {...childPropertyConfig}
+            key={childPropertyName}
+            id={prefix+childPropertyName}
+            name={childPropertyName}
+            object={object[childPropertyName]}
+            changeHandler={createChildChangeHandler(childPropertyName)}/>)
+      });
   }
-  return !currchildConfig.hide;
-})
-.map((childPropertyName) => {
-    const childPropertyConfig = childConfig(childPropertyName);
-  const prefix = id && id != "" ? id+"-" : id;
-  return(
-    <FieldRenderer {...rest} {...childPropertyConfig}
-  key={childPropertyName}
-  id={prefix+childPropertyName}
-  name={childPropertyName}
-  object={object[childPropertyName]}
-  changeHandler={createChildChangeHandler(childPropertyName)}/>)
-});
+
   return(
     <fieldset id={id+"-fieldset"}>
   {fields}
@@ -216,7 +218,9 @@ export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
   
   //handle generic cases
   const valueType = typeof object;
-  
+  if (object === null){
+    return(<GenericValueInput {...rest} {...config} value={""} name={name}/>)
+  }
   switch (valueType){
     case "object":
       return(<ObjectFormRenderer
