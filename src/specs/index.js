@@ -34,13 +34,13 @@ describe("ReactObjectForm", function() {
   before(() => {
     // Runs when the Suite loads.
     // Use this to load your component-under-test.
-    this.load( <ReactObjectForm object={data}
+    this.component( <ReactObjectForm object={data}
                                 config={config}
                                 id={"object-form-1"}/> );
   });
 
   it("reload", () => {
-    this.load( <ReactObjectForm
+    this.component( <ReactObjectForm
       object={data}
       config={config}
       id={"object-form-1"}/> );
@@ -53,7 +53,8 @@ describe("ReactObjectForm", function() {
         hide: true}]});
     });
     it("Change name label to NAME", () => {this.props({config:[{name:"name", label: "NAME"}]})});
-    it("Select from different cities", () => {
+    it("Select from different streets", () => {
+      let props = this.props;
       this.props({
         config: [{name:"address", config:[{
           name: "street",
@@ -62,9 +63,13 @@ describe("ReactObjectForm", function() {
           {value:"street-2", label:"Two Street"}
         ],
         changeHandler: (value) => {
-          this.log("Selected value: "+value);
+          data.address.street = value;
+          props({data: data})
         }}]}]
       })
     });
+    it("Set global change handler", () => {
+      this.props({changeHandler: (changedObject) => alert(JSON.stringify(changedObject))})
+    })
   });
 });
