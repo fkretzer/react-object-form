@@ -29,12 +29,16 @@ describe("ReactObjectForm", function() {
     "id": 10
   };
 
+  let data2 = {
+    "name": null
+  };
+
   let config = [];
 
   before(() => {
     // Runs when the Suite loads.
     // Use this to load your component-under-test.
-    this.component( <ReactObjectForm object={data}
+    this.component( <ReactObjectForm object={data2}
                                 config={config}
                                 id={"object-form-1"}/> );
   });

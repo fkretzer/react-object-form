@@ -36,7 +36,7 @@
   "scripts": {
     "start": "node ./node_modules/ui-harness/start --entry=./src/specs",
     "prepublish": "eslint ReactObjectForm.jsx && webpack && webpack -p",
-    "dev": "webpack-dev-server --progress --profile --colors --hot",
+    "dev": "webpack-dev-server --progress --profile --colors --hot --port 3030",
     "test": "mocha --compilers js:babel-core/register --recursive --require ./test/setup.js",
     "testw": "mocha --compilers js:babel-core/register --recursive --watch --require ./test/setup.js",
     "cover": "babel-node node_modules/istanbul/lib/cli cover node_modules/mocha/bin/_mocha -- --recursive --require ./test/setup.js",
