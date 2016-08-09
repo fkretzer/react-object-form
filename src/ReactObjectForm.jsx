@@ -181,7 +181,7 @@ ObjectFormRenderer.propTypes = {
 
 
 
-export const SelectRenderer = ({value, options, id, changeHandler, allowCustomValues, multi, ...rest}) => {
+export const SelectRenderer = ({value, options, id, changeHandler, allowCustomValues, multi, placeholder,...rest}) => {
   let internalChangeHandler = (values) => {
     if (values){
       if (Array.isArray(values)){
@@ -199,7 +199,9 @@ export const SelectRenderer = ({value, options, id, changeHandler, allowCustomVa
   onChange={internalChangeHandler}
   multi={multi}
   allowCreate={allowCustomValues}
-  clearable={allowCustomValues}/>
+  clearable={allowCustomValues}
+  placeholder={placeholder ? placeholder : "Select.."}
+    />
 );
 };
 
