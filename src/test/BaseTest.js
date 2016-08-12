@@ -1,7 +1,7 @@
 import React          from 'react';
 import ReactObjectForm  from '../ReactObjectForm';
 import { expect } from 'chai'
-import { mount, render } from 'enzyme'
+import { render } from 'enzyme'
 
 let data = {
   "name": "Nike Floder",
