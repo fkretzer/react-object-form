@@ -29,11 +29,7 @@ describe("ReactObjectForm", function() {
     },
     "id": 10
   };
-
-  let data2 = {
-    "name": null
-  };
-
+  
   let config = [];
 
   before(() => {
