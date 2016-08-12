@@ -29,7 +29,8 @@
     "react-dom": "^15.0.0",
     "semantic-release": "^4.3.5",
     "ui-harness": "^3.12.2",
-    "webpack": "^1.13.1"
+    "webpack": "^1.13.1",
+    "yargs": "^4.8.1"
   },
   "peerDependencies": {
     "react": "^15.0.0"
