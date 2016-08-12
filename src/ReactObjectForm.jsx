@@ -201,7 +201,7 @@ export const SelectRenderer = ({value, options, id, changeHandler, allowCustomVa
   allowCreate={allowCustomValues}
   clearable={allowCustomValues}
   placeholder={placeholder ? placeholder : "Select.."}
-    />
+  {...rest}/>
 );
 };
 
@@ -225,6 +225,9 @@ export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
   }
   switch (valueType){
     case "object":
+      if (Array.isArray(object)){
+        return (<MultiSelectRenderer {...rest} {...config} value={object} name={name} options={options ? options : []} />);
+      }
       return(<ObjectFormRenderer
     {...rest}
       config={config}
