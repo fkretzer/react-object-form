@@ -29,14 +29,14 @@ describe('ReactObjectForm', function(){
     let form = render(
       <ReactObjectForm object={data} />
     );
-    expect(form.find("#objEd-name-body input").attr("value")).to.be.equal("Nike Floder");
-    expect(form.find("#objEd-username-body input").attr("value")).to.be.equal("Katrin_Bussmann");
-    expect(form.find("#objEd-email-body input").attr("value")).to.be.equal("Emilian20@yahoo.com");
-    expect(form.find("#objEd-address-street-body input").attr("value")).to.be.equal("Krodinger Islands");
-    expect(form.find("#objEd-address-suite-body input").attr("value")).to.be.equal("Suite 232");
-    expect(form.find("#objEd-address-city-body input").attr("value")).to.be.equal("Dittmer land");
-    expect(form.find("#objEd-address-zipcode-body input").attr("value")).to.be.equal("28357");
-    expect(form.find("#objEd-address-geo-lat-body input").attr("value")).to.be.equal("79.8318");
-    expect(form.find("#objEd-address-geo-lng-body input").attr("value")).to.be.equal("160.5794");
+    expect(form.find("fieldset input").eq(0).attr("value")).to.be.equal("Nike Floder");
+    expect(form.find("fieldset input").eq(1).attr("value")).to.be.equal("Katrin_Bussmann");
+    expect(form.find("fieldset input").eq(2).attr("value")).to.be.equal("Emilian20@yahoo.com");
+    expect(form.find("fieldset input").eq(3).attr("value")).to.be.equal("Krodinger Islands");
+    expect(form.find("fieldset fieldset input").eq(1).attr("value")).to.be.equal("Suite 232");
+    expect(form.find("fieldset fieldset input").eq(2).attr("value")).to.be.equal("Dittmer land");
+    expect(form.find("fieldset fieldset input").eq(3).attr("value")).to.be.equal("28357");
+    expect(form.find("fieldset fieldset fieldset input").eq(0).attr("value")).to.be.equal("79.8318");
+    expect(form.find("fieldset fieldset fieldset input").eq(1).attr("value")).to.be.equal("160.5794");
   });
 });

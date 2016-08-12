@@ -114,11 +114,11 @@ BooleanValueInput.propTypes = {
 
 export const FieldRenderer = ({name,id, object, caption, label, ...rest}) => {
   return(
-    <div id={id+"-form-group"} className="form-group">
-    <label id={id+"-label"}>{label ? label : name}</label>
-    <div id={id+"-body"}>
+    <div className="form-group">
+    <label>{label ? label : name}</label>
+    <div>
     <BaseFormRenderer {...rest} id={id} name={name}  object={object}  />
-    <span id={id+"-caption"}>{caption}</span>
+    <span>{caption}</span>
     </div>
     </div>
 )
