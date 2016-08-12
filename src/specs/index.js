@@ -38,7 +38,7 @@ describe("ReactObjectForm", function() {
   before(() => {
     // Runs when the Suite loads.
     // Use this to load your component-under-test.
-^    this.component( <ReactObjectForm object={data}
+    this.component( <ReactObjectForm object={data}
                                 config={config}
                                 id={"object-form-1"}/> );
   });
