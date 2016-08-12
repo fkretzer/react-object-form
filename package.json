@@ -14,7 +14,7 @@
     "url": "https://github.com/fkretzer/react-object-form/issues"
   },
   "dependencies": {
-    "react-select": "^1.0.0-beta"
+    "react-select": "^1.0.0-beta14"
   },
   "devDependencies": {
     "babel-cli": "^6.0.0",
