@@ -1,5 +1,6 @@
 import React from "react";
 import ReactObjectForm from "../ReactObjectForm";
+import 'react-select/dist/react-select.css';
 
 describe("ReactObjectForm", function() {
   this.header(`## ReactObjectForm compoent. Form from JSON.`); // Markdown.

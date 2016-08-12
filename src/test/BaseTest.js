@@ -17,7 +17,7 @@ let data = {
       "lng": "160.5794"
     }}};
 
-describe('Form', function(){
+describe('ReactObjectForm', function(){
   it('should render correct amount of input elements for properties', function(){
     let form = render(
       <ReactObjectForm object={data} />

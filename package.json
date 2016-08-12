@@ -38,7 +38,7 @@
     "react-addons-test-utils": "^15.3.0",
     "react-dom": "^15.0.0",
     "semantic-release": "^4.3.5",
-    "ui-harness": "^3.12.2",
+    "ui-harness": "^3.17.1",
     "webpack": "^1.13.1",
     "yargs": "^4.8.1"
   },
