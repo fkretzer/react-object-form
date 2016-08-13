@@ -39,4 +39,19 @@ describe('ReactObjectForm', function(){
     expect(form.find("fieldset fieldset fieldset input").eq(0).attr("value")).to.be.equal("79.8318");
     expect(form.find("fieldset fieldset fieldset input").eq(1).attr("value")).to.be.equal("160.5794");
   });
+  
+  it('should hide nested properties based on config.', function(){
+    const config = [{name: "address", config:[{name: "geo", config:[{name: "lat", hide: true}]}]}];
+    const form = render(<ReactObjectForm object={data} config={config}/>);
+    expect(form.find("input")).to.have.length(8);
+    
+  });
+  
+  it('should hide address property based on config.', function(){
+    const config = [{name: "address", hide: true}];
+    const form = render(<ReactObjectForm object={data} config={config}/>);
+    expect(form.find("input")).to.have.length(3);
+  });
+  
+  
 });
