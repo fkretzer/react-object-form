@@ -1,7 +1,7 @@
 import React          from 'react';
 import ReactObjectForm  from '../ReactObjectForm';
 import { expect } from 'chai'
-import { render } from 'enzyme'
+import { render, mount } from 'enzyme'
 
 let data = {
   "name": "Nike Floder",
@@ -59,6 +59,24 @@ describe('ReactObjectForm', function(){
     
     expect(form.find("input")).to.have.length(9);
     expect(form.find("input").eq(2).attr("disabled")).to.exist;
+  });
+  
+  it('should use select input if there are options configured.', function () {
+    const data = {address: {street: "a-street"}};
+    const config = [{name: "address", config:[{name: "street", options: [
+      {label: "A Street", value: "a-street"},
+      {label: "B Street", value: "b-street"}
+    ]}]}];
+    
+    const form = mount(<ReactObjectForm object={data} config={config}/>);
+    expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
+    expect(form.find(".Select-value-label").text()).to.be.equal("A Street");
+    
+    form.setProps({object: {address: {street: "b-street"}} });
+  
+  
+    expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
+    expect(form.find(".Select-value-label").text()).to.be.equal("B Street");
   });
   
   
