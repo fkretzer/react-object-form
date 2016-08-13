@@ -62,11 +62,8 @@ describe("ReactObjectForm", function() {
           options:[
           {value:"street-1", label:"Street One"},
           {value:"street-2", label:"Two Street"}
-        ],
-        changeHandler: (value) => {
-          data.address.street = value;
-          props({data: data})
-        }}]}]
+        ]}]}],
+        changeHandler: value => this.props({object: value})
       })
     });
     it("Set global change handler", () => {
