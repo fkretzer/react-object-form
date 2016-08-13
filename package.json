@@ -39,6 +39,7 @@
     "react-dom": "^15.0.0",
     "semantic-release": "^4.3.5",
     "ui-harness": "^3.17.1",
+    "watch-run": "^1.2.4",
     "webpack": "^1.13.1",
     "yargs": "^4.8.1"
   },
@@ -49,9 +50,9 @@
     "start": "node ./node_modules/ui-harness/start --entry=./src/specs",
     "prepublish": "eslint ReactObjectForm.jsx && webpack && webpack -p",
     "dev": "webpack-dev-server --progress --profile --colors --hot --port 3030",
-    "test": "mocha './src/test' --compilers js:babel-core/register --recursive --require ./src/test/setup.js",
-    "testw": "mocha './src/test' --compilers js:babel-core/register --recursive --watch --require ./src/test/setup.js",
+    "test": "mocha './src/test' --colors --compilers js:babel-core/register --recursive --require ./src/test/setup.js",
     "cover": "babel-node node_modules/istanbul/lib/cli cover node_modules/mocha/bin/_mocha -- --recursive --require ./src/test/setup.js",
+    "testw": "watch-run -i -p 'src/**/*.@(js|jsx)' npm run test",
     "eslint": "eslint ReactObjectForm.jsx",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
