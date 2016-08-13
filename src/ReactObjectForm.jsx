@@ -48,7 +48,7 @@ class ReactObjectForm extends React.Component {
     object: React.PropTypes.object.isRequired,
     config: React.PropTypes.arrayOf(React.PropTypes.shape(PropertyConfig)),
     changeHandler: React.PropTypes.func,
-    id: React.PropTypes.string.isRequired
+    id: React.PropTypes.string
   };
   
   render(){
@@ -56,7 +56,7 @@ class ReactObjectForm extends React.Component {
     let configtmp = {};
     configtmp.config = config;
     //obey PropTypes
-    configtmp.name = id ? id : "objEd";
+    configtmp.name = id ? id : "react-object";
     configtmp = Object.assign({},config, configtmp);
     return(
       <form className={`${configtmp.name}-form`}>
