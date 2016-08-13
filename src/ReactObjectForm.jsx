@@ -191,9 +191,13 @@ export const SelectRenderer = ({value, options, id, changeHandler, allowCustomVa
       }
     }
   };
+  
+  //transform options if not in correct form
+  const transformedOptions = options.map(option => typeof option === "object" ? option : {label: option, value: option});
+  
   return(
     <Select
-  options={options}
+  options={transformedOptions}
   name={id+"-select"}
   value={value}
   onChange={internalChangeHandler}

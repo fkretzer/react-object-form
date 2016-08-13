@@ -79,5 +79,20 @@ describe('ReactObjectForm', function(){
     expect(form.find(".Select-value-label").text()).to.be.equal("B Street");
   });
   
-  
+  it('should use select input if there are options without labels configured.', function () {
+    const data = {address: {street: "A Street"}};
+    const config = [{name: "address", config:[{name: "street", options: [
+      "A Street", "B Street"
+    ]}]}];
+    
+    const form = mount(<ReactObjectForm object={data} config={config}/>);
+    expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
+    expect(form.find(".Select-value-label").text()).to.be.equal("A Street");
+    
+    form.setProps({object: {address: {street: "B Street"}} });
+    
+    
+    expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
+    expect(form.find(".Select-value-label").text()).to.be.equal("B Street");
+  });
 });
