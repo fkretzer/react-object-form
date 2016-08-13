@@ -53,5 +53,13 @@ describe('ReactObjectForm', function(){
     expect(form.find("input")).to.have.length(3);
   });
   
+  it('should disable inputs based on config.', function () {
+    const config = [{name: "email", disabled: true}]
+    const form = render(<ReactObjectForm object={data} config={config}/>)
+    
+    expect(form.find("input")).to.have.length(9);
+    expect(form.find("input").eq(2).attr("disabled")).to.exist;
+  });
+  
   
 });
