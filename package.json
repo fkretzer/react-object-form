@@ -30,7 +30,7 @@
     "enzyme": "^2.4.1",
     "eslint": "^3.0.0",
     "eslint-plugin-react": "^5.2.2",
-    "istanbul": "^0.4.4",
+    "istanbul": "^1.1.0-alpha.1",
     "jsdom": "^9.4.2",
     "mocha": "^3.0.2",
     "mocha-jsdom": "^1.1.0",

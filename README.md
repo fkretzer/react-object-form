@@ -33,7 +33,3 @@ npm install -g commitizen
 git add .
 git cz
 ```
-
-
-
-
