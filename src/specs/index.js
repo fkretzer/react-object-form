@@ -15,8 +15,8 @@ describe("ReactObjectForm", function() {
       "city": "Raynor land",
       "zipcode": "61031",
       "geo": {
-        "lat": "-45.3177",
-        "lng": "177.4623"
+        "lat": Number.NaN,
+        "lng": 177.4623
       }
     },
     "phone": "1-" +
@@ -105,6 +105,9 @@ describe("ReactObjectForm", function() {
     });
     it("Set global change handler", () => {
       this.props({changeHandler: (changedObject) => alert(JSON.stringify(changedObject))})
-    })
+    });
+    it("Live update object", () => {
+      this.props({changeHandler: (changedObject) => this.props({object: changedObject})});
+    });
   });
 });

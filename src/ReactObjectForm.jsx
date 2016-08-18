@@ -110,6 +110,40 @@ BooleanValueInput.propTypes = {
 };
 
 
+export class NumberValueInput extends React.Component {
+  constructor(props){
+    super(props);
+    this.state = {value: props.value};
+    this.numberParsingChangeHandler = this.numberParsingChangeHandler.bind(this);
+  }
+  
+  componentWillReceiveProps(next){
+    if (next.value != this.state.value){
+      this.setState({value: next.value});
+    }
+  }
+  
+  numberParsingChangeHandler(value){
+    this.setState({value: value});
+    const parsed = Number.parseFloat(value);
+    if (Number.isFinite(parsed)){
+      this.props.changeHandler(parsed);
+    } else if (value === ""){
+      this.setState({value: Number.NaN})
+      this.props.changeHandler(Number.NaN);
+    }
+  }
+  
+  
+  render(){
+    const { value, ...rest } = this.props;
+    return(<GenericValueInput
+                              value={Number.isNaN(value) ? "" : this.state.value}
+                              changeHandler={this.numberParsingChangeHandler}/>);
+  }
+}
+
+
 
 
 export const FieldRenderer = ({name,id, object, caption, label, ...rest}) => {
@@ -226,6 +260,8 @@ export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
     return(<GenericValueInput {...rest} {...config} value={""} name={name}/>)
   }
   switch (valueType){
+    case "number":
+      return(<NumberValueInput {...rest} {...config} value={object} name={name}/>)
     case "object":
       if (Array.isArray(object)){
         return (<MultiSelectRenderer {...rest} {...config} value={object} name={name} options={options ? options : []} />);
