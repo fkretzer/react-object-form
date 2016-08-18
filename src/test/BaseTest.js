@@ -1,7 +1,10 @@
 import React          from 'react';
 import ReactObjectForm  from '../ReactObjectForm';
-import { expect } from 'chai'
+import chai from 'chai'
 import { render, mount } from 'enzyme'
+import chaiString from 'chai-string'
+const expect = chai.use(chaiString).expect;
+
 
 let data = {
   "name": "Nike Floder",
@@ -70,13 +73,13 @@ describe('ReactObjectForm', function(){
     
     const form = mount(<ReactObjectForm object={data} config={config}/>);
     expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
-    expect(form.find(".Select-value-label").text()).to.be.equal("A Street");
+    expect(form.find(".Select-value-label").text()).to.startWith("A Street");
     
     form.setProps({object: {address: {street: "b-street"}} });
   
   
     expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
-    expect(form.find(".Select-value-label").text()).to.be.equal("B Street");
+    expect(form.find(".Select-value-label").text()).to.startWith("B Street");
   });
   
   it('should use select input if there are options without labels configured.', function () {
@@ -87,12 +90,11 @@ describe('ReactObjectForm', function(){
     
     const form = mount(<ReactObjectForm object={data} config={config}/>);
     expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
-    expect(form.find(".Select-value-label").text()).to.be.equal("A Street");
-    
+    expect(form.find(".Select-value-label").text()).to.startWith("A Street");
     form.setProps({object: {address: {street: "B Street"}} });
     
     
     expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
-    expect(form.find(".Select-value-label").text()).to.be.equal("B Street");
+    expect(form.find(".Select-value-label").text()).to.startWith("B Street");
   });
 });

@@ -210,16 +210,14 @@ export const SelectRenderer = ({value, options, id, changeHandler, allowCustomVa
 };
 
 export const MultiSelectRenderer = ({value, ...rest}) => {
-  return(<SelectRenderer {...rest}  value={value} multi={Array.isArray(value)}/>);
+  return(<SelectRenderer {...rest}  value={value} multi={true}/>);
 };
 
 
 export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
   //handle explicitly configured inputs
   
-  if (options && Array.isArray(options)){
-    return(<MultiSelectRenderer {...rest} {...config} value={object} name={name} options={options} />)
-  }
+  
   
   
   //handle generic cases
@@ -238,6 +236,12 @@ export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
       object={object} name={name}  />);
     case "boolean":
       return(<BooleanValueInput {...rest} {...config} value={object} name={name}/>);
+    
+    case "string":
+      //if there are options configured, use SelectRenderer
+      if (options && Array.isArray(options)){
+        return(<MultiSelectRenderer {...rest} {...config} value={object} name={name} options={options} />)
+      }
     default:
       return(<GenericValueInput {...rest} {...config} value={object} name={name}/>)
     
