@@ -66,6 +66,43 @@ describe("ReactObjectForm", function() {
         changeHandler: value => this.props({object: value})
       })
     });
+    it("Select multiple streets", () => {
+      let data = {
+        "name": "Vern Schuster Dr.",
+        "username": "Delores.Kerluke62",
+        "email": "Burnice_Kiehn87@yahoo.com",
+        "male": true,
+        "address": {
+          "street": ["street-1"],
+          "suite": "Suite 381",
+          "city": "Raynor land",
+          "zipcode": "61031",
+          "geo": {
+            "lat": "-45.3177",
+            "lng": "177.4623"
+          }
+        },
+        "phone": "1-" +
+        "544-246-0502",
+        "website": "lorena.name",
+        "company": {
+          "name": "Murray, Hirthe and Parisian",
+          "catchPhrase": "Decentralized systemic productivity",
+          "bs": "plug-and-play utilize experiences"
+        },
+        "id": 10
+      };
+      this.props({
+        object: data,
+        config: [{name:"address", config:[{
+          name: "street",
+          options:[
+            {value:"street-1", label:"Street One"},
+            {value:"street-2", label:"Two Street"}
+          ]}]}],
+        changeHandler: value => this.props({object: value})
+      })
+    });
     it("Set global change handler", () => {
       this.props({changeHandler: (changedObject) => alert(JSON.stringify(changedObject))})
     })
