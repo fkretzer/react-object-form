@@ -13,7 +13,7 @@
     "url": "https://github.com/fkretzer/react-object-form/issues"
   },
   "dependencies": {
-    "react-select": "^1.0.0-beta14"
+    "react-select": "^1.0.0-rc.1"
   },
   "devDependencies": {
     "babel-cli": "^6.0.0",
@@ -35,9 +35,9 @@
     "jsdom": "^9.4.2",
     "mocha": "^3.0.2",
     "mocha-jsdom": "^1.1.0",
-    "react": "^15.1.0",
-    "react-addons-test-utils": "^15.3.0",
-    "react-dom": "^15.0.0",
+    "react": "^15.3.1",
+    "react-addons-test-utils": "^15.3.1",
+    "react-dom": "^15.3.1",
     "semantic-release": "^4.3.5",
     "ui-harness": "^3.17.1",
     "watch-run": "^1.2.4",
@@ -45,7 +45,7 @@
     "yargs": "^5.0.0"
   },
   "peerDependencies": {
-    "react": "^15.0.0"
+    "react": "^15.3.1"
   },
   "scripts": {
     "start": "node ./node_modules/ui-harness/start --entry=./src/specs",
