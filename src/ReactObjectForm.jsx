@@ -137,7 +137,7 @@ export class NumberValueInput extends React.Component {
   
   render(){
     const { value, ...rest } = this.props;
-    return(<GenericValueInput
+    return(<GenericValueInput {...rest}
                               value={Number.isNaN(value) ? "" : this.state.value}
                               changeHandler={this.numberParsingChangeHandler}/>);
   }
