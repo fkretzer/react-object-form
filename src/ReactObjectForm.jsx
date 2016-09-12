@@ -276,7 +276,7 @@ export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
     case "string":
       //if there are options configured, use SelectRenderer
       if (options && Array.isArray(options)){
-        return(<MultiSelectRenderer {...rest} {...config} value={object} name={name} options={options} />)
+        return(<SelectRenderer {...rest} {...config} value={object} name={name} options={options} />)
       }
     default:
       return(<GenericValueInput {...rest} {...config} value={object} name={name}/>)
