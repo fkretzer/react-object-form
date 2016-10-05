@@ -4,7 +4,7 @@ import Select from 'react-select';
 
 //Workaround. See -> https://phabricator.babeljs.io/T6777
 typeof undefined;
-let console = console ? console : {}
+let console = console ? console : {};
 console.log = console.log ? console.log : () => {};
 
 //TODO: Make all components configurable by checking for component override via config
@@ -62,7 +62,7 @@ class ReactObjectForm extends React.Component {
       <form className={`${configtmp.name}-form`}>
   <BaseFormRenderer {...rest} {...configtmp} id={configtmp.name} object={object} />
       </form>
-  )
+  );
   }
 }
 export const GenericValueInput = ({value,id, name, placeholder, changeHandler,disabled, ...rest}) => {
@@ -77,7 +77,7 @@ export const GenericValueInput = ({value,id, name, placeholder, changeHandler,di
   placeholder={placeholder}
   disabled={disabled ? "disabled": null}
     />
-)
+);
 };
 GenericValueInput.propTypes = {
   ...PropertyConfig,
@@ -129,7 +129,7 @@ export class NumberValueInput extends React.Component {
     if (Number.isFinite(parsed)){
       this.props.changeHandler(parsed);
     } else if (value === ""){
-      this.setState({value: Number.NaN})
+      this.setState({value: Number.NaN});
       this.props.changeHandler(Number.NaN);
     }
   }
@@ -155,7 +155,7 @@ export const FieldRenderer = ({name,id, object, caption, label, ...rest}) => {
     <span>{caption}</span>
     </div>
     </div>
-)
+);
 };
 FieldRenderer.propTypes = {
   config: React.PropTypes.arrayOf(React.PropTypes.shape(PropertyConfig)),
@@ -197,7 +197,7 @@ export const ObjectFormRenderer = ({object, config, changeHandler,name,id, ...re
             id={prefix+childPropertyName}
             name={childPropertyName}
             object={object[childPropertyName]}
-            changeHandler={createChildChangeHandler(childPropertyName)}/>)
+            changeHandler={createChildChangeHandler(childPropertyName)}/>);
       });
   }
 
@@ -205,7 +205,7 @@ export const ObjectFormRenderer = ({object, config, changeHandler,name,id, ...re
     <fieldset id={id+"-fieldset"}>
   {fields}
 </fieldset>
-)
+);
 };
 ObjectFormRenderer.propTypes = {
   object:React.PropTypes.object,
@@ -257,11 +257,11 @@ export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
   //handle generic cases
   const valueType = typeof object;
   if (object === null){
-    return(<GenericValueInput {...rest} {...config} value={""} name={name}/>)
+    return(<GenericValueInput {...rest} {...config} value={""} name={name}/>);
   }
   switch (valueType){
     case "number":
-      return(<NumberValueInput {...rest} {...config} value={object} name={name}/>)
+      return(<NumberValueInput {...rest} {...config} value={object} name={name}/>);
     case "object":
       if (Array.isArray(object)){
         return (<MultiSelectRenderer {...rest} {...config} value={object} name={name} options={options ? options : []} />);
@@ -276,10 +276,10 @@ export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
     case "string":
       //if there are options configured, use SelectRenderer
       if (options && Array.isArray(options)){
-        return(<SelectRenderer {...rest} {...config} value={object} name={name} options={options} />)
+        return(<SelectRenderer {...rest} {...config} value={object} name={name} options={options} />);
       }
     default:
-      return(<GenericValueInput {...rest} {...config} value={object} name={name}/>)
+      return(<GenericValueInput {...rest} {...config} value={object} name={name}/>);
     
   }
 };
