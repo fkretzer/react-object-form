@@ -56,7 +56,7 @@ class ReactObjectForm extends React.Component {
     let configtmp = {};
     configtmp.config = config;
     //obey PropTypes
-    configtmp.name = id ? id : "react-object";
+    configtmp.name = id ? id : 'react-object';
     configtmp = Object.assign({},config, configtmp);
     return(
       <form className={`${configtmp.name}-form`}>
@@ -69,13 +69,13 @@ export const GenericValueInput = ({value,id, name, placeholder, changeHandler,di
   let internalChangeHandler = (event) => changeHandler(event.target.value);
   return(
     <input
-  id={id+"-input"}
-  className={`${disabled ? "disabled": ""} form-control generic-value-input`}
+  id={id+'-input'}
+  className={`${disabled ? 'disabled': ''} form-control generic-value-input`}
   type="text"
   value={value}
   onChange={internalChangeHandler}
   placeholder={placeholder}
-  disabled={disabled ? "disabled": null}
+  disabled={disabled ? 'disabled': null}
     />
 );
 };
@@ -94,14 +94,14 @@ export const BooleanValueInput = ({value, id, name, placeholder, changeHandler,d
   let internalChangeHandler = (event) => changeHandler(event.target.checked);
   return(
     <input {...rest}
-  id={id+"-input"}
-  className={`${disabled ? "disabled": ""} form-control boolean-value-input`}
+  id={id+'-input'}
+  className={`${disabled ? 'disabled': ''} form-control boolean-value-input`}
   type="checkbox"
-  checked={value ? "checked" : null}
+  checked={value ? 'checked' : null}
   value={name}
   name={name}
   onChange={internalChangeHandler}
-  disabled={disabled ? "disabled": null}/>);
+  disabled={disabled ? 'disabled': null}/>);
 };
 BooleanValueInput.propTypes = {
   ...PropertyConfig,
@@ -128,7 +128,7 @@ export class NumberValueInput extends React.Component {
     const parsed = Number.parseFloat(value);
     if (Number.isFinite(parsed)){
       this.props.changeHandler(parsed);
-    } else if (value === ""){
+    } else if (value === ''){
       this.setState({value: Number.NaN});
       this.props.changeHandler(Number.NaN);
     }
@@ -138,7 +138,7 @@ export class NumberValueInput extends React.Component {
   render(){
     const { value, ...rest } = this.props;
     return(<GenericValueInput {...rest}
-                              value={Number.isNaN(value) ? "" : this.state.value}
+                              value={Number.isNaN(value) ? '' : this.state.value}
                               changeHandler={this.numberParsingChangeHandler}/>);
   }
 }
@@ -170,7 +170,7 @@ export const ObjectFormRenderer = ({object, config, changeHandler,name,id, ...re
   };
   
   const createChildChangeHandler = (name) => (newObjectValue) => {
-    if (childConfig(name) && childConfig(name).hasOwnProperty("changeHandler") && "function" == typeof childConfig(name).changeHandler){
+    if (childConfig(name) && childConfig(name).hasOwnProperty('changeHandler') && 'function' == typeof childConfig(name).changeHandler){
       childConfig(name).changeHandler(newObjectValue, changeHandler);
     } else {
       let changedObject = Object.assign({}, object);
@@ -190,7 +190,7 @@ export const ObjectFormRenderer = ({object, config, changeHandler,name,id, ...re
       })
       .map((childPropertyName) => {
         const childPropertyConfig = childConfig(childPropertyName);
-        const prefix = id && id != "" ? id+"-" : id;
+        const prefix = id && id != '' ? id+'-' : id;
         return(
           <FieldRenderer {...rest} {...childPropertyConfig}
             key={childPropertyName}
@@ -202,7 +202,7 @@ export const ObjectFormRenderer = ({object, config, changeHandler,name,id, ...re
   }
 
   return(
-    <fieldset id={id+"-fieldset"}>
+    <fieldset id={id+'-fieldset'}>
   {fields}
 </fieldset>
 );
@@ -227,18 +227,18 @@ export const SelectRenderer = ({value, options, id, changeHandler, allowCustomVa
   };
   
   //transform options if not in correct form
-  const transformedOptions = options.map(option => typeof option === "object" ? option : {label: option, value: option});
+  const transformedOptions = options.map(option => typeof option === 'object' ? option : {label: option, value: option});
   
   return(
     <Select
   options={transformedOptions}
-  name={id+"-select"}
+  name={id+'-select'}
   value={value}
   onChange={internalChangeHandler}
   multi={multi}
   allowCreate={allowCustomValues}
   clearable={allowCustomValues}
-  placeholder={placeholder ? placeholder : "Select.."}
+  placeholder={placeholder ? placeholder : 'Select..'}
   {...rest}/>
 );
 };
@@ -257,12 +257,12 @@ export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
   //handle generic cases
   const valueType = typeof object;
   if (object === null){
-    return(<GenericValueInput {...rest} {...config} value={""} name={name}/>);
+    return(<GenericValueInput {...rest} {...config} value={''} name={name}/>);
   }
   switch (valueType){
-    case "number":
+    case 'number':
       return(<NumberValueInput {...rest} {...config} value={object} name={name}/>);
-    case "object":
+    case 'object':
       if (Array.isArray(object)){
         return (<MultiSelectRenderer {...rest} {...config} value={object} name={name} options={options ? options : []} />);
       }
@@ -270,10 +270,10 @@ export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
     {...rest}
       config={config}
       object={object} name={name}  />);
-    case "boolean":
+    case 'boolean':
       return(<BooleanValueInput {...rest} {...config} value={object} name={name}/>);
     
-    case "string":
+    case 'string':
       //if there are options configured, use SelectRenderer
       if (options && Array.isArray(options)){
         return(<SelectRenderer {...rest} {...config} value={object} name={name} options={options} />);
