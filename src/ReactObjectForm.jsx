@@ -147,9 +147,18 @@ export class NumberValueInput extends React.Component {
 
 
 export const FieldRenderer = ({name,id, object, caption, label, ...rest}) => {
+  //Use capitalized field name as label if not set
+  let labelString;
+  if (label){
+    labelString = label;
+  } else {
+    const [firstLetter, ...rest] = name;
+    labelString = firstLetter.toLocaleUpperCase()+rest.join("");
+  }
+  
   return(
     <div className="form-group">
-    <label>{label ? label : name}</label>
+    <label>{labelString}</label>
     <div>
     <BaseFormRenderer {...rest} id={id} name={name}  object={object}  />
     <span>{caption}</span>
