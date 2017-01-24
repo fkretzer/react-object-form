@@ -66,7 +66,14 @@ class ReactObjectForm extends React.Component {
   }
 }
 export const GenericValueInput = ({value,id, name, placeholder, changeHandler,disabled, ...rest}) => {
-  let internalChangeHandler = (event) => changeHandler(event.target.value);
+  
+  let internalChangeHandler = (event) => {
+    let returnValue = event.target.value;
+    if (returnValue === ""){
+      returnValue = null;
+    }
+    changeHandler(returnValue)
+  };
   return(
     <input
   id={id+"-input"}
@@ -147,9 +154,18 @@ export class NumberValueInput extends React.Component {
 
 
 export const FieldRenderer = ({name,id, object, caption, label, ...rest}) => {
+  //Use capitalized field name as label if not set
+  let labelString;
+  if (label){
+    labelString = label;
+  } else {
+    const [firstLetter, ...rest] = name;
+    labelString = firstLetter.toLocaleUpperCase()+rest.join("");
+  }
+  
   return(
     <div className="form-group">
-    <label>{label ? label : name}</label>
+    <label>{labelString}</label>
     <div>
     <BaseFormRenderer {...rest} id={id} name={name}  object={object}  />
     <span>{caption}</span>
@@ -249,10 +265,7 @@ export const MultiSelectRenderer = ({value, ...rest}) => {
 
 
 export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
-  //handle explicitly configured inputs
-  
-  
-  
+  //TODO: handle explicitly configured inputs
   
   //handle generic cases
   const valueType = typeof object;
