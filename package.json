@@ -42,7 +42,7 @@
     "ui-harness": "3.19.0",
     "watch-run": "1.2.4",
     "webpack": "1.13.2",
-    "yargs": "5.0.0"
+    "yargs": "6.5.0"
   },
   "peerDependencies": {
     "react": "15.3.1"
