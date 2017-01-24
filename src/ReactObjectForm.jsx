@@ -66,7 +66,14 @@ class ReactObjectForm extends React.Component {
   }
 }
 export const GenericValueInput = ({value,id, name, placeholder, changeHandler,disabled, ...rest}) => {
-  let internalChangeHandler = (event) => changeHandler(event.target.value);
+  
+  let internalChangeHandler = (event) => {
+    let returnValue = event.target.value;
+    if (returnValue === ""){
+      returnValue = null;
+    }
+    changeHandler(returnValue)
+  };
   return(
     <input
   id={id+"-input"}
@@ -258,10 +265,7 @@ export const MultiSelectRenderer = ({value, ...rest}) => {
 
 
 export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
-  //handle explicitly configured inputs
-  
-  
-  
+  //TODO: handle explicitly configured inputs
   
   //handle generic cases
   const valueType = typeof object;
