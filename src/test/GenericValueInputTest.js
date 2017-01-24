@@ -30,15 +30,6 @@ describe("GenericValueInput", () =>{
     expect(changedValueTest.someString).to.be.null;
     
   });
-  
-  it("Change handler should return 0 when entered.",() => {
-    let changedValueTest;
-    const changeHandler = changedValue => {changedValueTest = changedValue};
-    const form = mount(<ReactObjectForm object={{someString: "foo"}} changeHandler={changeHandler} id="null-form"/>);
-    form.find("input").simulate('change', {target: {value: ""}});
-    expect(changedValueTest.someString).to.be.null;
-    
-  });
 });
     
     
