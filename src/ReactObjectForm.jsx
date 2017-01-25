@@ -194,10 +194,17 @@ export const ObjectFormRenderer = ({object, config, changeHandler,name,id, ...re
       changeHandler(changedObject);
     }
   };
-  let fields = [] ;
-  if (object){
-    fields = Object.keys(object)
-      .filter((name) => {
+//add configured fields in configured order
+  const objectFields = Object.keys(object);
+  let fields = config ? config.map(c => c.name) : [];
+  //add remaining fields without config
+  objectFields.forEach(f => {
+    if (!fields.includes(f)){
+      fields.push(f);
+    }
+  });
+  
+  fields = fields.filter((name) => {
         let currchildConfig = childConfig(name);
         if(! currchildConfig){
           return true;
@@ -215,7 +222,6 @@ export const ObjectFormRenderer = ({object, config, changeHandler,name,id, ...re
             object={object[childPropertyName]}
             changeHandler={createChildChangeHandler(childPropertyName)}/>)
       });
-  }
 
   return(
     <fieldset id={id+"-fieldset"}>

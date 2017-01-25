@@ -57,11 +57,11 @@ describe('ReactObjectForm', function(){
   });
   
   it('should disable inputs based on config.', function () {
-    const config = [{name: "email", disabled: true}]
+    const config = [{name: "email", disabled: true}];
     const form = render(<ReactObjectForm object={data} config={config}/>)
     
     expect(form.find("input")).to.have.length(9);
-    expect(form.find("input").eq(2).attr("disabled")).to.exist;
+    expect(form.find("input").eq(0).attr("disabled")).to.exist;
   });
   
   it('should use select input if there are options configured.', function () {
@@ -96,5 +96,14 @@ describe('ReactObjectForm', function(){
     
     expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
     expect(form.find(".Select-value-label").text()).to.startWith("B Street");
+  });
+  
+  it('should render fields in configured order', ()=>{
+    const data = {foo: "b", bar: "a"};
+    const config = [{name: "bar"},{name: "foo"}];
+    const form = render(<ReactObjectForm object={data} config={config}/>);
+    
+    expect(form.find("fieldset input").eq(0).attr("value")).to.be.equal("a");
+    expect(form.find("fieldset input").eq(1).attr("value")).to.be.equal("b");
   });
 });
