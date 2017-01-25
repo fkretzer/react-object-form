@@ -82,6 +82,24 @@ describe('ReactObjectForm', function(){
     expect(form.find(".Select-value-label").text()).to.startWith("B Street");
   });
   
+  it('should use select input if object is null and there are options configured.', function () {
+    const data = {address: {street: null}};
+    const config = [{name: "address", config:[{name: "street", options: [
+      {label: "A Street", value: "a-street"},
+      {label: "B Street", value: "b-street"}
+    ]}]}];
+    
+    const form = mount(<ReactObjectForm object={data} config={config}/>);
+    expect(form.find("Select").get(0)).not.to.be.undefined;
+    
+    
+    form.setProps({object: {address: {street: "b-street"}} });
+    
+    
+    expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
+    expect(form.find(".Select-value-label").text()).to.startWith("B Street");
+  });
+  
   it('should use select input if there are options without labels configured.', function () {
     const data = {address: {street: "A Street"}};
     const config = [{name: "address", config:[{name: "street", options: [

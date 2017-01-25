@@ -40,7 +40,7 @@ const InternalObjectValuePropType = React.PropTypes.oneOfType([
   React.PropTypes.arrayOf([
     React.PropTypes.bool,
     React.PropTypes.number,
-    React.PropTypes.string])]).isRequired;
+    React.PropTypes.string])]);
 
 class ReactObjectForm extends React.Component {
   
@@ -275,7 +275,12 @@ export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
   
   //handle generic cases
   const valueType = typeof object;
-  if (object === null){
+  
+  if (options && Array.isArray(options)){
+    return(<SelectRenderer {...rest} {...config} value={object} name={name} options={options} />)
+  }
+  
+  if (object === null && !options){
     return(<GenericValueInput {...rest} {...config} value={""} name={name}/>)
   }
   switch (valueType){
