@@ -109,5 +109,11 @@ describe("ReactObjectForm", function() {
     it("Live update object", () => {
       this.props({changeHandler: (changedObject) => this.props({object: changedObject})});
     });
+    it("Custom renderer component.", () => {
+      this.props({
+        config: [{name: "name", component: ({value}) => <span className="veryCustom">{value.toUpperCase()}</span>}],
+        object: {name: "foo"}
+      })
+    });
   });
 });

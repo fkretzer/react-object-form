@@ -270,8 +270,11 @@ export const MultiSelectRenderer = ({value, ...rest}) => {
 };
 
 
-export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
+export const BaseFormRenderer = ({object,config, name, options, component: Component, ...rest}) => {
   //TODO: handle explicitly configured inputs
+  if (Component){
+    return(<Component {...rest} value={object} name={name} config={config} />)
+  }
   
   //handle generic cases
   const valueType = typeof object;
