@@ -9,6 +9,15 @@ console.log = console.log ? console.log : () => {};
 
 //TODO: Make all components configurable by checking for component override via config
 
+const InternalObjectValuePropType = React.PropTypes.oneOfType([
+  React.PropTypes.object,
+  React.PropTypes.bool,
+  React.PropTypes.number,
+  React.PropTypes.string,
+  React.PropTypes.arrayOf([
+    React.PropTypes.bool,
+    React.PropTypes.number,
+    React.PropTypes.string])]);
 
 //Base shape for property config
 const PropertyConfig =
@@ -23,6 +32,8 @@ const PropertyConfig =
   allowCustomValues: React.PropTypes.bool,
   //true if form field should be read-only
   disabled: React.PropTypes.bool,
+  clearable: React.PropTypes.bool,
+  resetValue: React.PropTypes.shape({label: React.PropTypes.string,  option: InternalObjectValuePropType}),
   placeholder: React.PropTypes.string,
   label: React.PropTypes.string,
   //TODO: concept / implement
@@ -31,16 +42,6 @@ const PropertyConfig =
   changeHandler: React.PropTypes.func,
   hide: React.PropTypes.bool
 };
-
-const InternalObjectValuePropType = React.PropTypes.oneOfType([
-  React.PropTypes.object,
-  React.PropTypes.bool,
-  React.PropTypes.number,
-  React.PropTypes.string,
-  React.PropTypes.arrayOf([
-    React.PropTypes.bool,
-    React.PropTypes.number,
-    React.PropTypes.string])]);
 
 class ReactObjectForm extends React.Component {
   
@@ -237,7 +238,7 @@ ObjectFormRenderer.propTypes = {
 
 
 
-export const SelectRenderer = ({value, options, id, changeHandler, allowCustomValues, multi, placeholder,...rest}) => {
+export const SelectRenderer = ({value, options, id, changeHandler, allowCustomValues, multi, placeholder, resetValue, ...rest}) => {
   let internalChangeHandler = (values) => {
     if (values){
       if (Array.isArray(values)){
@@ -251,17 +252,22 @@ export const SelectRenderer = ({value, options, id, changeHandler, allowCustomVa
   //transform options if not in correct form
   const transformedOptions = options.map(option => typeof option === "object" ? option : {label: option, value: option});
   
+  //default behaviour of react-select is to use clearable = true, but to make this work a resetValue
+  //in the correct format is needed
+  
+  
   return(
     <Select
+      {...rest}
   options={transformedOptions}
   name={id+"-select"}
   value={value}
   onChange={internalChangeHandler}
   multi={multi}
+  resetValue={resetValue ? resetValue : {label: "", value: null}}
   allowCreate={allowCustomValues}
-  clearable={allowCustomValues}
   placeholder={placeholder ? placeholder : "Select.."}
-  {...rest}/>
+  />
 );
 };
 

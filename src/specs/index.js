@@ -96,6 +96,7 @@ describe("ReactObjectForm", function() {
         object: data,
         config: [{name:"address", config:[{
           name: "street",
+          multi: true,
           options:[
             {value:"street-1", label:"Street One"},
             {value:"street-2", label:"Two Street"}
