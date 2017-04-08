@@ -37,7 +37,7 @@
     "mocha-jsdom": "1.1.0",
     "react": "15.3.1",
     "react-addons-test-utils": "15.3.1",
-    "react-dom": "15.3.1",
+    "react-dom": "15.5.3",
     "semantic-release": "6.3.2",
     "ui-harness": "3.19.0",
     "watch-run": "1.2.4",
