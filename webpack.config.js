@@ -11,7 +11,7 @@ module.exports = [
       ReactObjectForm: './src/ReactObjectForm.jsx'
     },
     output: {
-      path: 'dist',
+      path: path.join(__dirname,'dist/'),
       library: 'ReactObjectForm',
       filename: optimizeMinimize ? '[name].min.js' : '[name].js',
       libraryTarget: "umd"
@@ -52,6 +52,6 @@ module.exports = [
       }),
     ],
     
-    devtool: optimizeMinimize ? 'source-map' : null
+    devtool: optimizeMinimize ? 'source-map' : false
   }
 ];
