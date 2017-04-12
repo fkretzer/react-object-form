@@ -4,6 +4,8 @@
 [![Dependency Status](https://www.versioneye.com/user/projects/57d7c71dbf2b4b0050f30ae8/badge.svg)](https://www.versioneye.com/user/projects/57d7c71dbf2b4b0050f30ae8)
 # React Object Form
 
+[![Greenkeeper badge](https://badges.greenkeeper.io/fkretzer/react-object-form.svg)](https://greenkeeper.io/)
+
 -> [EXAMPLE](https://jsfiddle.net/dhfsk/gfzpghun/)
 
 ## Get it
