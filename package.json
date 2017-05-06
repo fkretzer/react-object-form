@@ -39,7 +39,7 @@
     "react-addons-test-utils": "15.5.1",
     "react-dom": "15.5.4",
     "react-test-renderer": "15.5.4",
-    "semantic-release": "6.3.2",
+    "semantic-release": "6.3.6",
     "ui-harness": "3.19.0",
     "watch-run": "1.2.5",
     "webpack": "2.4.1",
