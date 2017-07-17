@@ -30,6 +30,20 @@ describe("GenericValueInput", () =>{
     expect(changedValueTest.someString).to.be.null;
     
   });
+  it("Change handler should return trimmed String by default.",() => {
+    let changedValueTest;
+    const changeHandler = changedValue => {changedValueTest = changedValue};
+    const form = mount(<ReactObjectForm object={{someString: ""}} changeHandler={changeHandler} id="null-form"/>);
+    form.find("input").simulate('change', {target: {value: "foo "}});
+    expect(changedValueTest.someString).to.be.equal("foo");
+  });
+  it("Change handler should not trim String if, trim=false for GenericValueInput.",() => {
+    let changedValueTest;
+    const changeHandler = changedValue => {changedValueTest = changedValue};
+    const form = mount(<ReactObjectForm config={[{name: "someString", trim: false}]} object={{someString: ""}} changeHandler={changeHandler} id="null-form"/>);
+    form.find("input").simulate('change', {target: {value: "foo "}});
+    expect(changedValueTest.someString).to.be.equal("foo ");
+  });
 });
     
     

@@ -40,7 +40,8 @@ const PropertyConfig =
   validator: React.PropTypes.func,
   caption: React.PropTypes.string,
   changeHandler: React.PropTypes.func,
-  hide: React.PropTypes.bool
+  hide: React.PropTypes.bool,
+  trim: React.PropTypes.bool
 };
 
 class ReactObjectForm extends React.Component {
@@ -66,12 +67,14 @@ class ReactObjectForm extends React.Component {
   )
   }
 }
-export const GenericValueInput = ({value,id, name, placeholder, changeHandler,disabled, ...rest}) => {
+export const GenericValueInput = ({value,id, name, placeholder, changeHandler,disabled, trim = true, ...rest}) => {
   
   let internalChangeHandler = (event) => {
     let returnValue = event.target.value;
     if (returnValue === ""){
       returnValue = null;
+    } else if (trim){
+      returnValue = returnValue.trim();
     }
     changeHandler(returnValue)
   };
