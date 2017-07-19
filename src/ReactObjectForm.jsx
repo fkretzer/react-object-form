@@ -121,6 +121,12 @@ export class NumberValueInput extends React.Component {
             changeHandler={this.numberParsingChangeHandler}/>);
     }
 }
+NumberValueInput.propTypes = {
+    ...PropertyConfig,
+    value: PropTypes.bool,
+    config: PropTypes.shape(PropertyConfig)
+};
+
 
 
 
@@ -148,7 +154,10 @@ export const FieldRenderer = ({name,id, object, caption, label, ...rest}) => {
 FieldRenderer.propTypes = {
     config: PropTypes.arrayOf(PropTypes.shape(PropertyConfig)),
     object: InternalObjectValuePropType,
-    name: PropTypes.string.isRequired
+    name: PropTypes.string.isRequired,
+    id: PropTypes.string.isRequired,
+    caption: PropTypes.string,
+    label: PropTypes.string
 };
 
 export const ObjectFormRenderer = ({object, config, changeHandler, id, ...rest}) => {
@@ -203,7 +212,9 @@ export const ObjectFormRenderer = ({object, config, changeHandler, id, ...rest})
 };
 ObjectFormRenderer.propTypes = {
     object:PropTypes.object,
-    config: PropTypes.arrayOf(PropTypes.shape(PropertyConfig))
+    config: PropTypes.arrayOf(PropTypes.shape(PropertyConfig)),
+    changeHandler: PropTypes.func,
+    id: PropTypes.string.isRequired
 };
 
 
@@ -242,9 +253,13 @@ export const SelectRenderer = ({value, options, id, changeHandler, allowCustomVa
     );
 };
 
+SelectRenderer.propTypes = {...PropertyConfig};
+
 export const MultiSelectRenderer = ({value, ...rest}) => {
     return(<SelectRenderer {...rest}  value={value} multi={true}/>);
 };
+
+MultiSelectRenderer.propTypes = {...PropertyConfig};
 
 
 export const BaseFormRenderer = ({object,config, name, options, component: Component, ...rest}) => {
@@ -289,6 +304,7 @@ export const BaseFormRenderer = ({object,config, name, options, component: Compo
     }
 };
 BaseFormRenderer.propTypes = {
+    ...PropertyConfig,
     object: InternalObjectValuePropType,
     config: PropTypes.oneOfType([
         PropTypes.arrayOf(PropTypes.shape(PropertyConfig)),
