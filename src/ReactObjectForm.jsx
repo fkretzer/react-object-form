@@ -282,6 +282,7 @@ export const BaseFormRenderer = ({object,config, name, options, component: Compo
             if (options && Array.isArray(options)){
                 return(<SelectRenderer {...rest} {...config} value={object} name={name} options={options} />);
             }
+            break;
         default:
             return(<GenericValueInput trim {...rest} {...config} value={object} name={name}/>);
     
