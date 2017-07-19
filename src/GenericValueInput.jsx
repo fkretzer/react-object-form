@@ -26,7 +26,7 @@ class GenericValueInput extends React.Component {
     }
   
     render(){
-        const {value,id, name, placeholder, changeHandler,disabled, ...rest} = this.props;
+        const {value,id, placeholder, disabled} = this.props;
         return (
             <input
                 id={id+'-input'}
