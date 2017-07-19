@@ -57,11 +57,11 @@ describe('ReactObjectForm', function(){
   });
   
   it('should disable inputs based on config.', function () {
-    const config = [{name: "email", disabled: true}]
+    const config = [{name: "email", disabled: true}];
     const form = render(<ReactObjectForm object={data} config={config}/>)
     
     expect(form.find("input")).to.have.length(9);
-    expect(form.find("input").eq(2).attr("disabled")).to.exist;
+    expect(form.find("input").eq(0).attr("disabled")).to.exist;
   });
   
   it('should use select input if there are options configured.', function () {
@@ -82,6 +82,24 @@ describe('ReactObjectForm', function(){
     expect(form.find(".Select-value-label").text()).to.startWith("B Street");
   });
   
+  it('should use select input if object is null and there are options configured.', function () {
+    const data = {address: {street: null}};
+    const config = [{name: "address", config:[{name: "street", options: [
+      {label: "A Street", value: "a-street"},
+      {label: "B Street", value: "b-street"}
+    ]}]}];
+    
+    const form = mount(<ReactObjectForm object={data} config={config}/>);
+    expect(form.find("Select").get(0)).not.to.be.undefined;
+    
+    
+    form.setProps({object: {address: {street: "b-street"}} });
+    
+    
+    expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
+    expect(form.find(".Select-value-label").text()).to.startWith("B Street");
+  });
+  
   it('should use select input if there are options without labels configured.', function () {
     const data = {address: {street: "A Street"}};
     const config = [{name: "address", config:[{name: "street", options: [
@@ -96,5 +114,14 @@ describe('ReactObjectForm', function(){
     
     expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
     expect(form.find(".Select-value-label").text()).to.startWith("B Street");
+  });
+  
+  it('should render fields in configured order', ()=>{
+    const data = {foo: "b", bar: "a"};
+    const config = [{name: "bar"},{name: "foo"}];
+    const form = render(<ReactObjectForm object={data} config={config}/>);
+    
+    expect(form.find("fieldset input").eq(0).attr("value")).to.be.equal("a");
+    expect(form.find("fieldset input").eq(1).attr("value")).to.be.equal("b");
   });
 });

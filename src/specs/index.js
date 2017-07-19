@@ -96,6 +96,7 @@ describe("ReactObjectForm", function() {
         object: data,
         config: [{name:"address", config:[{
           name: "street",
+          multi: true,
           options:[
             {value:"street-1", label:"Street One"},
             {value:"street-2", label:"Two Street"}
@@ -108,6 +109,12 @@ describe("ReactObjectForm", function() {
     });
     it("Live update object", () => {
       this.props({changeHandler: (changedObject) => this.props({object: changedObject})});
+    });
+    it("Custom renderer component.", () => {
+      this.props({
+        config: [{name: "name", component: ({value}) => <span className="veryCustom">{value.toUpperCase()}</span>}],
+        object: {name: "foo"}
+      })
     });
   });
 });

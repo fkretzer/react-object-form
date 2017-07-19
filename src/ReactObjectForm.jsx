@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
-
+import GenericValueInput from './GenericValueInput';
 
 //Workaround. See -> https://phabricator.babeljs.io/T6777
 typeof undefined;
@@ -9,6 +9,15 @@ console.log = console.log ? console.log : () => {};
 
 //TODO: Make all components configurable by checking for component override via config
 
+const InternalObjectValuePropType = React.PropTypes.oneOfType([
+  React.PropTypes.object,
+  React.PropTypes.bool,
+  React.PropTypes.number,
+  React.PropTypes.string,
+  React.PropTypes.arrayOf([
+    React.PropTypes.bool,
+    React.PropTypes.number,
+    React.PropTypes.string])]);
 
 //Base shape for property config
 const PropertyConfig =
@@ -23,24 +32,17 @@ const PropertyConfig =
   allowCustomValues: React.PropTypes.bool,
   //true if form field should be read-only
   disabled: React.PropTypes.bool,
+  clearable: React.PropTypes.bool,
+  resetValue: React.PropTypes.shape({label: React.PropTypes.string,  option: InternalObjectValuePropType}),
   placeholder: React.PropTypes.string,
   label: React.PropTypes.string,
   //TODO: concept / implement
   validator: React.PropTypes.func,
   caption: React.PropTypes.string,
   changeHandler: React.PropTypes.func,
-  hide: React.PropTypes.bool
+  hide: React.PropTypes.bool,
+  trim: React.PropTypes.bool
 };
-
-const InternalObjectValuePropType = React.PropTypes.oneOfType([
-  React.PropTypes.object,
-  React.PropTypes.bool,
-  React.PropTypes.number,
-  React.PropTypes.string,
-  React.PropTypes.arrayOf([
-    React.PropTypes.bool,
-    React.PropTypes.number,
-    React.PropTypes.string])]).isRequired;
 
 class ReactObjectForm extends React.Component {
   
@@ -65,30 +67,6 @@ class ReactObjectForm extends React.Component {
   );
   }
 }
-export const GenericValueInput = ({value,id, name, placeholder, changeHandler,disabled, ...rest}) => {
-  let internalChangeHandler = (event) => changeHandler(event.target.value);
-  return(
-    <input
-  id={id+'-input'}
-  className={`${disabled ? 'disabled': ''} form-control generic-value-input`}
-  type="text"
-  value={value}
-  onChange={internalChangeHandler}
-  placeholder={placeholder}
-  disabled={disabled ? 'disabled': null}
-    />
-);
-};
-GenericValueInput.propTypes = {
-  ...PropertyConfig,
-  value: React.PropTypes.oneOfType([
-  React.PropTypes.number,
-  React.PropTypes.string,
-  React.PropTypes.arrayOf([
-    React.PropTypes.number,
-    React.PropTypes.string])
-]),
-  config: React.PropTypes.shape(PropertyConfig)};
 
 export const BooleanValueInput = ({value, id, name, placeholder, changeHandler,disabled, ...rest}) => {
   let internalChangeHandler = (event) => changeHandler(event.target.checked);
@@ -147,9 +125,18 @@ export class NumberValueInput extends React.Component {
 
 
 export const FieldRenderer = ({name,id, object, caption, label, ...rest}) => {
+  //Use capitalized field name as label if not set
+  let labelString;
+  if (label){
+    labelString = label;
+  } else {
+    const [firstLetter, ...rest] = name;
+    labelString = firstLetter.toLocaleUpperCase()+rest.join("");
+  }
+  
   return(
     <div className="form-group">
-    <label>{label ? label : name}</label>
+    <label>{labelString}</label>
     <div>
     <BaseFormRenderer {...rest} id={id} name={name}  object={object}  />
     <span>{caption}</span>
@@ -178,10 +165,17 @@ export const ObjectFormRenderer = ({object, config, changeHandler,name,id, ...re
       changeHandler(changedObject);
     }
   };
-  let fields = [] ;
-  if (object){
-    fields = Object.keys(object)
-      .filter((name) => {
+//add configured fields in configured order
+  const objectFields = Object.keys(object);
+  let fields = config ? config.map(c => c.name) : [];
+  //add remaining fields without config
+  objectFields.forEach(f => {
+    if (!fields.includes(f)){
+      fields.push(f);
+    }
+  });
+  
+  fields = fields.filter((name) => {
         let currchildConfig = childConfig(name);
         if(! currchildConfig){
           return true;
@@ -199,7 +193,6 @@ export const ObjectFormRenderer = ({object, config, changeHandler,name,id, ...re
             object={object[childPropertyName]}
             changeHandler={createChildChangeHandler(childPropertyName)}/>);
       });
-  }
 
   return(
     <fieldset id={id+'-fieldset'}>
@@ -215,7 +208,7 @@ ObjectFormRenderer.propTypes = {
 
 
 
-export const SelectRenderer = ({value, options, id, changeHandler, allowCustomValues, multi, placeholder,...rest}) => {
+export const SelectRenderer = ({value, options, id, changeHandler, allowCustomValues, multi, placeholder, resetValue, ...rest}) => {
   let internalChangeHandler = (values) => {
     if (values){
       if (Array.isArray(values)){
@@ -229,17 +222,22 @@ export const SelectRenderer = ({value, options, id, changeHandler, allowCustomVa
   //transform options if not in correct form
   const transformedOptions = options.map(option => typeof option === 'object' ? option : {label: option, value: option});
   
+  //default behaviour of react-select is to use clearable = true, but to make this work a resetValue
+  //in the correct format is needed
+  
+  
   return(
     <Select
+      {...rest}
   options={transformedOptions}
   name={id+'-select'}
   value={value}
   onChange={internalChangeHandler}
   multi={multi}
+  resetValue={resetValue ? resetValue : {label: "", value: null}}
   allowCreate={allowCustomValues}
-  clearable={allowCustomValues}
   placeholder={placeholder ? placeholder : 'Select..'}
-  {...rest}/>
+  />
 );
 };
 
@@ -248,16 +246,21 @@ export const MultiSelectRenderer = ({value, ...rest}) => {
 };
 
 
-export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
-  //handle explicitly configured inputs
-  
-  
-  
+export const BaseFormRenderer = ({object,config, name, options, component: Component, ...rest}) => {
+  //TODO: handle explicitly configured inputs
+  if (Component){
+    return(<Component {...rest} value={object} name={name} config={config} />)
+  }
   
   //handle generic cases
   const valueType = typeof object;
-  if (object === null){
-    return(<GenericValueInput {...rest} {...config} value={''} name={name}/>);
+  
+  if (options && Array.isArray(options)){
+    return(<SelectRenderer {...rest} {...config} value={object} name={name} options={options} />)
+  }
+  
+  if (object === null && !options){
+    return(<GenericValueInput trim {...rest} {...config} value={''} name={name}/>);
   }
   switch (valueType){
     case 'number':
@@ -279,7 +282,7 @@ export const BaseFormRenderer = ({object,config, name, options, ...rest}) => {
         return(<SelectRenderer {...rest} {...config} value={object} name={name} options={options} />);
       }
     default:
-      return(<GenericValueInput {...rest} {...config} value={object} name={name}/>);
+      return(<GenericValueInput trim {...rest} {...config} value={object} name={name}/>);
     
   }
 };
@@ -293,3 +296,4 @@ BaseFormRenderer.propTypes = {
 
 
 export default ReactObjectForm;
+export { PropertyConfig };
