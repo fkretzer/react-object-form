@@ -16,6 +16,9 @@ module.exports = [
       filename: optimizeMinimize ? '[name].min.js' : '[name].js',
       libraryTarget: "umd"
     },
+    resolve: {
+      extensions: ['.js','.jsx']
+    },
     module: {
       loaders: [
         {
