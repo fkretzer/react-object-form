@@ -1,6 +1,6 @@
 import React from 'react';
 import Select from 'react-select';
-
+import GenericValueInput from './GenericValueInput';
 
 //Workaround. See -> https://phabricator.babeljs.io/T6777
 typeof undefined;
@@ -67,39 +67,6 @@ class ReactObjectForm extends React.Component {
   )
   }
 }
-export const GenericValueInput = ({value,id, name, placeholder, changeHandler,disabled, trim = true, ...rest}) => {
-  
-  let internalChangeHandler = (event) => {
-    let returnValue = event.target.value;
-    if (returnValue === ""){
-      returnValue = null;
-    } else if (trim){
-      returnValue = returnValue.trim();
-    }
-    changeHandler(returnValue)
-  };
-  return(
-    <input
-  id={id+"-input"}
-  className={`${disabled ? "disabled": ""} form-control generic-value-input`}
-  type="text"
-  value={value}
-  onChange={internalChangeHandler}
-  placeholder={placeholder}
-  disabled={disabled ? "disabled": null}
-    />
-)
-};
-GenericValueInput.propTypes = {
-  ...PropertyConfig,
-  value: React.PropTypes.oneOfType([
-  React.PropTypes.number,
-  React.PropTypes.string,
-  React.PropTypes.arrayOf([
-    React.PropTypes.number,
-    React.PropTypes.string])
-]),
-  config: React.PropTypes.shape(PropertyConfig)};
 
 export const BooleanValueInput = ({value, id, name, placeholder, changeHandler,disabled, ...rest}) => {
   let internalChangeHandler = (event) => changeHandler(event.target.checked);
@@ -293,7 +260,7 @@ export const BaseFormRenderer = ({object,config, name, options, component: Compo
   }
   
   if (object === null && !options){
-    return(<GenericValueInput {...rest} {...config} value={""} name={name}/>)
+    return(<GenericValueInput trim {...rest} {...config} value={""} name={name}/>)
   }
   switch (valueType){
     case "number":
@@ -315,7 +282,7 @@ export const BaseFormRenderer = ({object,config, name, options, component: Compo
         return(<SelectRenderer {...rest} {...config} value={object} name={name} options={options} />)
       }
     default:
-      return(<GenericValueInput {...rest} {...config} value={object} name={name}/>)
+      return(<GenericValueInput trim {...rest} {...config} value={object} name={name}/>)
     
   }
 };
@@ -329,3 +296,4 @@ BaseFormRenderer.propTypes = {
 
 
 export default ReactObjectForm;
+export { PropertyConfig };
