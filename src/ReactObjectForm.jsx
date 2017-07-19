@@ -69,7 +69,7 @@ class ReactObjectForm extends React.Component {
   }
 }
 
-export const BooleanValueInput = ({value, id, name, placeholder, changeHandler,disabled, ...rest}) => {
+export const BooleanValueInput = ({value, id, name, changeHandler,disabled, ...rest}) => {
     let internalChangeHandler = (event) => changeHandler(event.target.checked);
     return(
         <input {...rest}
