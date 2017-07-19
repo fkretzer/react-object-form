@@ -1,6 +1,7 @@
 import React from 'react';
 import Select from 'react-select';
 import GenericValueInput from './GenericValueInput';
+import PropTypes from 'prop-types';
 
 //Workaround. See -> https://phabricator.babeljs.io/T6777
 typeof undefined;
@@ -9,48 +10,48 @@ console.log = console.log ? console.log : () => {};
 
 //TODO: Make all components configurable by checking for component override via config
 
-const InternalObjectValuePropType = React.PropTypes.oneOfType([
-    React.PropTypes.object,
-    React.PropTypes.bool,
-    React.PropTypes.number,
-    React.PropTypes.string,
-    React.PropTypes.arrayOf([
-        React.PropTypes.bool,
-        React.PropTypes.number,
-        React.PropTypes.string])]);
+const InternalObjectValuePropType = PropTypes.oneOfType([
+    PropTypes.object,
+    PropTypes.bool,
+    PropTypes.number,
+    PropTypes.string,
+    PropTypes.arrayOf([
+        PropTypes.bool,
+        PropTypes.number,
+        PropTypes.string])]);
 
 //Base shape for property config
 const PropertyConfig =
 {
     //Property key in Object
-    name: React.PropTypes.string.isRequired,
+    name: PropTypes.string.isRequired,
     //If property is a child-object configs for its properties can be supplied
-    config: React.PropTypes.arrayOf(React.PropTypes.shape(PropertyConfig)),
+    config: PropTypes.arrayOf(PropTypes.shape(PropertyConfig)),
     //Possible values for this property
-    options: React.PropTypes.array,
+    options: PropTypes.array,
     //true if property can contain values which are not listed in "options"
-    allowCustomValues: React.PropTypes.bool,
+    allowCustomValues: PropTypes.bool,
     //true if form field should be read-only
-    disabled: React.PropTypes.bool,
-    clearable: React.PropTypes.bool,
-    resetValue: React.PropTypes.shape({label: React.PropTypes.string,  option: InternalObjectValuePropType}),
-    placeholder: React.PropTypes.string,
-    label: React.PropTypes.string,
+    disabled: PropTypes.bool,
+    clearable: PropTypes.bool,
+    resetValue: PropTypes.shape({label: PropTypes.string,  option: InternalObjectValuePropType}),
+    placeholder: PropTypes.string,
+    label: PropTypes.string,
     //TODO: concept / implement
-    validator: React.PropTypes.func,
-    caption: React.PropTypes.string,
-    changeHandler: React.PropTypes.func,
-    hide: React.PropTypes.bool,
-    trim: React.PropTypes.bool
+    validator: PropTypes.func,
+    caption: PropTypes.string,
+    changeHandler: PropTypes.func,
+    hide: PropTypes.bool,
+    trim: PropTypes.bool
 };
 
 class ReactObjectForm extends React.Component {
   
   static propTypes = {
-      object: React.PropTypes.object.isRequired,
-      config: React.PropTypes.arrayOf(React.PropTypes.shape(PropertyConfig)),
-      changeHandler: React.PropTypes.func,
-      id: React.PropTypes.string
+      object: PropTypes.object.isRequired,
+      config: PropTypes.arrayOf(PropTypes.shape(PropertyConfig)),
+      changeHandler: PropTypes.func,
+      id: PropTypes.string
   };
   
   render(){
@@ -83,8 +84,8 @@ export const BooleanValueInput = ({value, id, name, placeholder, changeHandler,d
 };
 BooleanValueInput.propTypes = {
     ...PropertyConfig,
-    value: React.PropTypes.bool,
-    config: React.PropTypes.shape(PropertyConfig)
+    value: PropTypes.bool,
+    config: PropTypes.shape(PropertyConfig)
 };
 
 
@@ -145,9 +146,9 @@ export const FieldRenderer = ({name,id, object, caption, label, ...rest}) => {
     );
 };
 FieldRenderer.propTypes = {
-    config: React.PropTypes.arrayOf(React.PropTypes.shape(PropertyConfig)),
+    config: PropTypes.arrayOf(PropTypes.shape(PropertyConfig)),
     object: InternalObjectValuePropType,
-    name: React.PropTypes.string.isRequired
+    name: PropTypes.string.isRequired
 };
 
 export const ObjectFormRenderer = ({object, config, changeHandler,name,id, ...rest}) => {
@@ -201,8 +202,8 @@ export const ObjectFormRenderer = ({object, config, changeHandler,name,id, ...re
     );
 };
 ObjectFormRenderer.propTypes = {
-    object:React.PropTypes.object,
-    config: React.PropTypes.arrayOf(React.PropTypes.shape(PropertyConfig))
+    object:PropTypes.object,
+    config: PropTypes.arrayOf(PropTypes.shape(PropertyConfig))
 };
 
 
@@ -288,9 +289,9 @@ export const BaseFormRenderer = ({object,config, name, options, component: Compo
 };
 BaseFormRenderer.propTypes = {
     object: InternalObjectValuePropType,
-    config: React.PropTypes.oneOfType([
-        React.PropTypes.arrayOf(React.PropTypes.shape(PropertyConfig)),
-        React.PropTypes.shape(PropertyConfig)
+    config: PropTypes.oneOfType([
+        PropTypes.arrayOf(PropTypes.shape(PropertyConfig)),
+        PropTypes.shape(PropertyConfig)
     ])
 };
 

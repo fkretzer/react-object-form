@@ -1,5 +1,6 @@
 import React from "react";
 import PropertyConfig from './ReactObjectForm';
+import PropTypes from 'prop-types';
 
 class GenericValueInput extends React.Component {
   constructor(props) {
@@ -43,13 +44,13 @@ class GenericValueInput extends React.Component {
 
 GenericValueInput.propTypes = {
   ...PropertyConfig,
-  value: React.PropTypes.oneOfType([
-    React.PropTypes.number,
-    React.PropTypes.string,
-    React.PropTypes.arrayOf([
-      React.PropTypes.number,
-      React.PropTypes.string])
+  value: PropTypes.oneOfType([
+    PropTypes.number,
+    PropTypes.string,
+    PropTypes.arrayOf([
+      PropTypes.number,
+      PropTypes.string])
   ]),
-  config: React.PropTypes.shape(PropertyConfig)};
+  config: PropTypes.shape(PropertyConfig)};
 
 export default GenericValueInput;
