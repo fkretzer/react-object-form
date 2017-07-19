@@ -151,7 +151,7 @@ FieldRenderer.propTypes = {
     name: PropTypes.string.isRequired
 };
 
-export const ObjectFormRenderer = ({object, config, changeHandler,name,id, ...rest}) => {
+export const ObjectFormRenderer = ({object, config, changeHandler, id, ...rest}) => {
   
     const childConfig = (name) => {
         return config ? config.find((currentConfig) => currentConfig.name === name) : null;
