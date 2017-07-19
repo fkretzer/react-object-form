@@ -13,11 +13,13 @@
     "url": "https://github.com/fkretzer/react-object-form/issues"
   },
   "dependencies": {
+    "prop-types": "^15.5.10",
     "react-select": "1.0.0-rc.5"
   },
   "devDependencies": {
     "babel-cli": "6.24.1",
     "babel-core": "6.24.1",
+    "babel-eslint": "^7.2.3",
     "babel-loader": "7.0.0",
     "babel-plugin-syntax-object-rest-spread": "6.13.0",
     "babel-plugin-transform-class-properties": "6.24.1",
@@ -29,7 +31,7 @@
     "coveralls": "2.13.1",
     "cz-conventional-changelog": "2.0.0",
     "enzyme": "2.8.2",
-    "eslint": "3.19.0",
+    "eslint": "^4.2.0",
     "eslint-plugin-react": "7.1.0",
     "istanbul": "1.1.0-alpha.1",
     "jsdom": "9.12.0",
@@ -50,12 +52,12 @@
   },
   "scripts": {
     "start": "node ./node_modules/ui-harness/start --entry=./src/specs",
-    "prepublish": "eslint ReactObjectForm.jsx && webpack && webpack -p",
-    "dev": "webpack-dev-server --progress --profile --colors --hot --port 3030",
+    "prepublish": "eslint src/*.jsx && node ./node_modules/webpack/bin/webpack.js && node ./node_modules/webpack/bin/webpack.js -p",
+    "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --profile --colors --hot --port 3030",
     "test": "mocha './src/test' --colors --compilers js:babel-core/register --recursive --require ./src/test/setup.js",
     "cover": "babel-node node_modules/istanbul/lib/cli cover node_modules/mocha/bin/_mocha -- --recursive --require ./src/test/setup.js",
     "testw": "watch-run -i -p 'src/**/*.@(js|jsx)' npm run test",
-    "eslint": "eslint ReactObjectForm.jsx",
+    "eslint": "eslint src/*.jsx",
     "semantic-release": "semantic-release pre && npm publish && semantic-release post"
   },
   "keywords": [
