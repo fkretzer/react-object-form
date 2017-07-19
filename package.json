@@ -34,7 +34,7 @@
     "eslint": "^4.2.0",
     "eslint-plugin-react": "7.1.0",
     "istanbul": "1.1.0-alpha.1",
-    "jsdom": "9.12.0",
+    "jsdom": "^11.1.0",
     "mocha": "^3.4.2",
     "mocha-jsdom": "1.1.0",
     "react": "^15.6.1",
@@ -42,9 +42,9 @@
     "react-dom": "^15.6.1",
     "react-test-renderer": "^15.6.1",
     "semantic-release": "6.3.6",
-    "ui-harness": "3.19.0",
+    "ui-harness": "^4.0.0-alpha.2",
     "watch-run": "1.2.5",
-    "webpack": "2.5.0",
+    "webpack": "^3.3.0",
     "yargs": "^8.0.2"
   },
   "peerDependencies": {
