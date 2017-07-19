@@ -52,8 +52,8 @@
   },
   "scripts": {
     "start": "node ./node_modules/ui-harness/start --entry=./src/specs",
-    "prepublish": "eslint src/*.jsx && webpack && webpack -p",
-    "dev": "webpack-dev-server --progress --profile --colors --hot --port 3030",
+    "prepublish": "eslint src/*.jsx && node ./node_modules/webpack/bin/webpack.js && node ./node_modules/webpack/bin/webpack.js -p",
+    "dev": "node ./node_modules/webpack-dev-server/bin/webpack-dev-server.js --progress --profile --colors --hot --port 3030",
     "test": "mocha './src/test' --colors --compilers js:babel-core/register --recursive --require ./src/test/setup.js",
     "cover": "babel-node node_modules/istanbul/lib/cli cover node_modules/mocha/bin/_mocha -- --recursive --require ./src/test/setup.js",
     "testw": "watch-run -i -p 'src/**/*.@(js|jsx)' npm run test",
