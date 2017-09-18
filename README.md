@@ -16,7 +16,7 @@ https://www.npmjs.com/package/react-object-form
 
 Use UMD module (dist/ReactObjectForm.js) from npm package or build by yourself. If you have some module-loading infrastructure, you can import the module directly (`lib/ReactObjectForm.js`) this expects [react-select](https://github.com/JedWatson/react-select) to be available for import.
 
-`npm install react-object-form` -> dist/ReactObjectForm.js is a UMD module which only needs React as a peer-dependency.
+`npm install react-object-form` -> dist/ReactObjectForm.js is a UMD module which needs React and `react-select` as dependencies.
 The rendered markup uses Bootstrap css classes, so include some bootstrap.css to get default styling. The select-component uses [react-select](https://github.com/JedWatson/react-select) and also needs [css styles](https://raw.githubusercontent.com/JedWatson/react-select/master/dist/react-select.css) from there. Import the defaults, or style yourself.
 
 ## Use it
