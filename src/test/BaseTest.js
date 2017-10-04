@@ -72,13 +72,11 @@ describe('ReactObjectForm', function(){
     ]}]}];
     
     const form = mount(<ReactObjectForm object={data} config={config}/>);
-    expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
+    
     expect(form.find(".Select-value-label").text()).to.startWith("A Street");
     
     form.setProps({object: {address: {street: "b-street"}} });
-  
-  
-    expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
+      
     expect(form.find(".Select-value-label").text()).to.startWith("B Street");
   });
   
@@ -91,12 +89,9 @@ describe('ReactObjectForm', function(){
     
     const form = mount(<ReactObjectForm object={data} config={config}/>);
     expect(form.find("Select").get(0)).not.to.be.undefined;
-    
-    
+      
     form.setProps({object: {address: {street: "b-street"}} });
-    
-    
-    expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
+      
     expect(form.find(".Select-value-label").text()).to.startWith("B Street");
   });
   
@@ -107,12 +102,10 @@ describe('ReactObjectForm', function(){
     ]}]}];
     
     const form = mount(<ReactObjectForm object={data} config={config}/>);
-    expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
     expect(form.find(".Select-value-label").text()).to.startWith("A Street");
+    
     form.setProps({object: {address: {street: "B Street"}} });
     
-    
-    expect(form.find("input").get(0).getAttribute("type")).to.be.equal("hidden");
     expect(form.find(".Select-value-label").text()).to.startWith("B Street");
   });
   
