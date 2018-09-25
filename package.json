@@ -45,7 +45,7 @@
     "semantic-release": "8.0.3",
     "ui-harness": "3.18.1",
     "watch-run": "1.2.5",
-    "webpack": "^3.3.0",
+    "webpack": "^4.20.0",
     "yargs": "^10.0.3"
   },
   "peerDependencies": {
