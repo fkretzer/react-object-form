@@ -7,7 +7,7 @@
 
 
 
--> [EXAMPLE](https://jsfiddle.net/dhfsk/gfzpghun/)
+For an example look at: [EXAMPLE](https://jsfiddle.net/dhfsk/gfzpghun/)
 
 ## Get it
 
