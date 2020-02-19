@@ -141,7 +141,6 @@ export const FieldRenderer = ({name, id, object, caption, label, tooltipComponen
         // eslint-disable-next-line no-unused-vars
         let tooltipComponent = () => <span/>;
     }
-    tooltipComponent.displayName = 'TooltipComponent';
     return (
         <div className="form-group">
             <label>{labelString}</label>
