@@ -37,7 +37,6 @@ const PropertyConfig =
         //TODO: concept / implement
         validator: PropTypes.func,
         caption: PropTypes.string,
-        TooltipComponent: PropTypes.func,
         changeHandler: PropTypes.func,
         hide: PropTypes.bool,
         trim: PropTypes.bool
@@ -72,14 +71,14 @@ export const BooleanValueInput = ({value, id, name, changeHandler, disabled, ...
     const result = (
         <div>
             <input {...rest}
-                   id={id + '-input'}
-                   className={`${disabled ? 'disabled' : ''} form-control boolean-value-input`}
-                   type="checkbox"
-                   checked={value ? 'checked' : null}
-                   value={name}
-                   name={name}
-                   onChange={internalChangeHandler}
-                   disabled={disabled ? 'disabled' : null}/>
+                id={id + '-input'}
+                className={`${disabled ? 'disabled' : ''} form-control boolean-value-input`}
+                type="checkbox"
+                checked={value ? 'checked' : null}
+                value={name}
+                name={name}
+                onChange={internalChangeHandler}
+                disabled={disabled ? 'disabled' : null}/>
         </div>);
     return result;
 };
@@ -118,8 +117,8 @@ export class NumberValueInput extends React.Component {
     render() {
         const {value, ...rest} = this.props;
         return (<GenericValueInput {...rest}
-                                   value={Number.isNaN(value) ? '' : this.state.value}
-                                   changeHandler={this.numberParsingChangeHandler}/>);
+            value={Number.isNaN(value) ? '' : this.state.value}
+            changeHandler={this.numberParsingChangeHandler}/>);
     }
 }
 
@@ -129,7 +128,7 @@ NumberValueInput.propTypes = {
     config: PropTypes.shape(PropertyConfig)
 };
 
-export const FieldRenderer = ({name, id, object, caption, label, TooltipComponent, ...rest}) => {
+export const FieldRenderer = ({name, id, object, caption, label, tooltipComponent, ...rest}) => {
     //Use capitalized field name as label if not set
     let labelString;
     if (label) {
@@ -138,15 +137,15 @@ export const FieldRenderer = ({name, id, object, caption, label, TooltipComponen
         const [firstLetter, ...rest] = name;
         labelString = firstLetter.toLocaleUpperCase() + rest.join('');
     }
-
-    if(!TooltipComponent){
-        TooltipComponent = () => <span/>
+    tooltipComponent.displayName = 'TooltipComponent';
+    if(tooltipComponent === 'undefined'){
+        // eslint-disable-next-line no-unused-vars
+        let tooltipComponent = () => <span/>;
     }
-
     return (
         <div className="form-group">
             <label>{labelString}</label>
-            <TooltipComponent/>
+            <tooltipComponent/>
             <div>
                 <BaseFormRenderer {...rest} id={id} name={name} object={object}/>
                 <span>{caption}</span>
@@ -160,7 +159,8 @@ FieldRenderer.propTypes = {
     name: PropTypes.string.isRequired,
     id: PropTypes.string.isRequired,
     caption: PropTypes.string,
-    label: PropTypes.string
+    label: PropTypes.string,
+    tooltipComponent: PropTypes.func
 };
 
 export const ObjectFormRenderer = ({object, config, changeHandler, id, ...rest}) => {
@@ -200,11 +200,11 @@ export const ObjectFormRenderer = ({object, config, changeHandler, id, ...rest})
             const prefix = id && id !== '' ? id + '-' : id;
             return (
                 <FieldRenderer {...rest} {...childPropertyConfig}
-                               key={childPropertyName}
-                               id={prefix + childPropertyName}
-                               name={childPropertyName}
-                               object={object[childPropertyName]}
-                               changeHandler={createChildChangeHandler(childPropertyName)}/>);
+                    key={childPropertyName}
+                    id={prefix + childPropertyName}
+                    name={childPropertyName}
+                    object={object[childPropertyName]}
+                    changeHandler={createChildChangeHandler(childPropertyName)}/>);
         });
 
     return (
@@ -290,7 +290,7 @@ export const BaseFormRenderer = ({object, config, name, options, component: Comp
         case 'object':
             if (Array.isArray(object)) {
                 return (<MultiSelectRenderer {...rest} {...config} value={object} name={name}
-                                             options={options ? options : []}/>);
+                    options={options ? options : []}/>);
             }
             return (<ObjectFormRenderer
                 {...rest}
